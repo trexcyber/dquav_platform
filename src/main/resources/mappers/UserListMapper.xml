@@ -7,11 +7,22 @@
 
     <!--    添加用户-->
     <insert id="addUserList" useGeneratedKeys="true" keyProperty="uid">
-        INSERT INTO userlist(uid, lid, username, password, name, telephone)
-        values (#{uid}, #{lid}, #{username}, #{password}, #{name}, #{telephone})
+        INSERT INTO userlist(lid, username, password, name, telephone)
+        values (#{lid}, #{username}, #{password}, #{name}, #{telephone})
     </insert>
 
     <!--    查询用户信息-->
+    <select id="getUserList" resultType="com.dquav.dquav_platform.entity.UserList">
+        SELECT uid,
+               lid,
+               username,
+               password,
+               name,
+               telephone
+        FROM userlist
+    </select>
+
+    <!--    根据用户名查询用户信息-->
     <select id="getUserListByUsername" resultType="com.dquav.dquav_platform.entity.UserList">
         SELECT uid,
                lid,
@@ -31,7 +42,7 @@
     </delete>
 
     <!--    根据用户id 修改用户数据-->
-    <update id="updateUserByUid" parameterType="java.lang.Integer">
+    <update id="updateUserByUid">
         UPDATE
             userlist
         SET username=#{username},
