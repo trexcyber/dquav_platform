@@ -12,7 +12,7 @@ public class PhotoPackage {
     private Integer activityId;
     private String photoPackageName;
     private String photoPackageSite;
-    private Integer idDelete;
+    private Integer isGuest;
 
     @Override
     public String toString() {
@@ -21,7 +21,7 @@ public class PhotoPackage {
                 ", activityId=" + activityId +
                 ", photoPackageName='" + photoPackageName + '\'' +
                 ", photoPackageSite='" + photoPackageSite + '\'' +
-                ", idDelete=" + idDelete +
+                ", isGuest=" + isGuest +
                 '}';
     }
 
@@ -57,11 +57,11 @@ public class PhotoPackage {
         this.photoPackageSite = photoPackageSite;
     }
 
-    public Integer getIdDelete() {
-        return idDelete;
+    public Integer getIsGuest() {
+        return isGuest;
     }
 
-    public void setIdDelete(Integer idDelete) {
-        this.idDelete = idDelete;
+    public void setIsGuest(Integer isGuest) {
+        this.isGuest = isGuest;
     }
 }

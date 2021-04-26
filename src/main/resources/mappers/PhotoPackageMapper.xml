@@ -7,8 +7,8 @@
 
     <!--    插入照片压缩包数据-->
     <insert id="addPhotoPackage" useGeneratedKeys="true" keyProperty="photoId">
-        INSERT INTO photopackage(activityid, photopakeage_name, photopakeage_site, is_delete)
-        VALUES (#{activityId}, #{photoPackageName}, #{photoPackageSite}, #{idDelete})
+        INSERT INTO photopackage(activityid, photopakeage_name, photopakeage_site, is_guest)
+        VALUES (#{activityId}, #{photoPackageName}, #{photoPackageSite}, #{isGuest})
     </insert>
 
     <!--    根据活动项目id查询照片压缩包数据-->
