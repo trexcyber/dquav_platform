@@ -47,7 +47,7 @@ public class GuestPhotoMapperTests {
 
     @Test
     public void deletePhotoById() {
-        Integer activityId = 1;
+        Integer activityId = 2;
         Integer rows = guestPhotoMapper.deletePhotoById(activityId);
         System.out.println(rows);
     }
