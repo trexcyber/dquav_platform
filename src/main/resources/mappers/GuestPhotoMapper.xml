@@ -7,8 +7,8 @@
 
     <!--    添加照片-->
     <insert id="addPhoto" useGeneratedKeys="true" keyProperty="pid">
-        INSERT INTO guestphoto(pid, activityid, photo_adds)
-        VALUES (#{pid}, #{activityId}, #{photoAdds})
+        INSERT INTO guestphoto(activityid, photo_adds)
+        VALUES (#{activityId}, #{photoAdds})
     </insert>
 
     <!--    查询照片信息 根据活动项目id-->

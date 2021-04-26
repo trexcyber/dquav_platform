@@ -13,17 +13,19 @@
 
     <!--    根据活动项目id查询照片压缩包数据-->
     <select id="getPhotoPackageByActivityId" resultType="com.dquav.dquav_platform.entity.PhotoPackage">
-        SELECT photopakeage_name AS photoPackageName,
-               photopakeage_site AS photoPackageSite
+        SELECT photoid AS photoId,
+               photopakeage_name AS photoPackageName,
+               photopakeage_site AS photoPackageSite,
+               is_guest AS isGuest
         FROM photopackage
         WHERE activityid = #{activityId}
     </select>
 
     <!--    根据照片压缩包名称 删除压缩包数据-->
-    <delete id="deletePhotoPackageByName" parameterType="java.lang.Integer">
+    <delete id="deletePhotoPackageByPid" parameterType="java.lang.Integer">
         DELETE
         FROM photopackage
-        WHERE photopakeage_name = #{photopackageName}
+        WHERE photoid = #{photoId}
     </delete>
 
     <!--    根据活动项目id 删除压缩包数据-->

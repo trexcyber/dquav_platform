@@ -2,6 +2,8 @@ package com.dquav.dquav_platform.mapper;
 
 import com.dquav.dquav_platform.entity.GuestPhoto;
 
+import java.util.List;
+
 /**
  * 照片数据的持久层接口
  * @author TrEx
@@ -21,7 +23,7 @@ public interface GuestPhotoMapper {
      * @param activityId 活动id
      * @return 照片数据
      */
-    GuestPhoto getPhotoByActivityId(Integer activityId);
+    List<GuestPhoto> getPhotoByActivityId(Integer activityId);
 
     /**
      * 删除照片

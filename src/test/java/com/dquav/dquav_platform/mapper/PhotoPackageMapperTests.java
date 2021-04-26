@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author TrEx
@@ -20,13 +21,36 @@ public class PhotoPackageMapperTests {
     PhotoPackageMapper photoPackageMapper;
 
     @Test
-    public void addPhotoPackage(){
+    public void addPhotoPackage() {
         PhotoPackage photoPackage = new PhotoPackage();
         photoPackage.setActivityId(1);
-        photoPackage.setPhotoPackageName("陕投三会活动现场照片");
-        photoPackage.setPhotoPackageSite("c://photo/stsh");
+        photoPackage.setPhotoPackageName("(测试)陕投三会活动现场照片");
+        photoPackage.setPhotoPackageSite("c://photo/stshdfsdf");
         photoPackage.setIsGuest(1);
         Integer rows = photoPackageMapper.addPhotoPackage(photoPackage);
+        System.out.println(rows);
+    }
+
+    @Test
+    public void getPhotoPackageByActivityId() {
+        Integer activityId = 1;
+        List<PhotoPackage> photoPackages = photoPackageMapper.getPhotoPackageByActivityId(activityId);
+        for (PhotoPackage photoPackage : photoPackages) {
+            System.out.println(photoPackage);
+        }
+    }
+
+    @Test
+    public void deletePhotoPackageByPid() {
+        Integer photoId = 3;
+        Integer rows = photoPackageMapper.deletePhotoPackageByPid(photoId);
+        System.out.println(rows);
+    }
+
+    @Test
+    public void deletePhotoPackageById() {
+        Integer activityId = 1;
+        Integer rows = photoPackageMapper.deletePhotoPackageById(activityId);
         System.out.println(rows);
     }
 
