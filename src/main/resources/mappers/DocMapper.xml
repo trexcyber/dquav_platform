@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dquav.dquav_platform.mapper.DocMapper">
+
+    <!--    添加文档-->
+    <insert id="addDoc" useGeneratedKeys="true" keyProperty="docId">
+        INSERT INTO doc(activityid,
+                        doc_name, doc_site,
+                        is_delete)
+        VALUES (#{activityId},
+                #{docName}, #{docSite},
+                #{isDelete})
+    </insert>
+
+    <!--    查询文件数据-->
+    <select id="getDocByName" resultType="com.dquav.dquav_platform.entity.Doc">
+        SELECT docid     AS docId,
+               doc_name  AS docName,
+               doc_site  AS docSite,
+               is_delete AS isDelete
+        FROM doc
+        WHERE doc_name = #{docName}
+    </select>
+
+    <!--    查询文件名-->
+    <select id="getDocNameByActivityId" resultType="com.dquav.dquav_platform.entity.Doc">
+        SELECT docid AS docId, doc_name AS docName
+        FROM doc
+        WHERE activityid = #{activityId}
+    </select>
+
+    <!--    根据文件id删除文件-->
+    <delete id="deleteDocById" parameterType="com.dquav.dquav_platform.entity.Doc">
+        DELETE
+        FROM doc
+        WHERE docid = #{docId}
+    </delete>
+
+    <!--    根据活动项目id删除文件-->
+    <delete id="deleteDocByActivityId" parameterType="com.dquav.dquav_platform.entity.Doc">
+        DELETE
+        FROM doc
+        WHERE activityid = #{activityId}
+    </delete>
+
+</mapper>

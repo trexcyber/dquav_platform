@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dquav.dquav_platform.mapper.PhotoPackageMapper">
+
+    <!--    插入照片压缩包数据-->
+    <insert id="addPhotoPackage" useGeneratedKeys="true" keyProperty="photoId">
+        INSERT INTO photopackage(activityid, photopakeage_name, photopakeage_site, is_delete)
+        VALUES (#{activityId}, #{photoPackageName}, #{photoPackageSite}, #{idDelete})
+    </insert>
+
+    <!--    根据活动项目id查询照片压缩包数据-->
+    <select id="getPhotoPackageByActivityId" resultType="com.dquav.dquav_platform.entity.PhotoPackage">
+        SELECT photopakeage_name AS photoPackageName,
+               photopakeage_site AS photoPackageSite
+        FROM photopackage
+        WHERE activityid = #{activityId}
+    </select>
+
+    <!--    根据照片压缩包名称 删除压缩包数据-->
+    <delete id="deletePhotoPackageByName" parameterType="java.lang.Integer">
+        DELETE
+        FROM photopackage
+        WHERE photopakeage_name = #{photopackageName}
+    </delete>
+
+    <!--    根据活动项目id 删除压缩包数据-->
+    <delete id="deletePhotoPackageById" parameterType="java.lang.Integer">
+        DELETE
+        FROM photopackage
+        WHERE activityid = #{activityId}
+    </delete>
+
+
+</mapper>

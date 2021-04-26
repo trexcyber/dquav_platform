@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dquav.dquav_platform.mapper.ActivityMapper">
+
+    <!--    插入活动项目数据-->
+    <insert id="addActivity" useGeneratedKeys="true" keyProperty="activityId">
+        INSERT INTO activity(
+        activity_name,
+        activity_starttime,activity_endtime,
+        activity_adds,is_delete,
+        CREATED_TIME,UPDATED_BY,
+        UPDATED_TIME
+        )VALUES (
+        #{activityName},
+        #{activityStartTime},#{activityEndTime},
+        #{activityAdds},#{isDelete},
+        #{createdTime},#{updatedBy},
+        #{updateTime}
+        )
+    </insert>
+
+    <!--    根据活动项目名查询活动数据-->
+    <select id="getByActivityName" resultType="com.dquav.dquav_platform.entity.Activity">
+        SELECT
+        activityid AS activityId,
+        activity_name AS activityName,
+        activity_starttime AS activityStartTime,
+        activity_endtime AS activityEndTime,
+        activity_adds AS activityAdds,
+        is_delete AS isDelete,
+        CREATED_TIME AS createdTime,
+        UPDATED_BY AS updatedBy,
+        UPDATED_TIME AS updateTime
+        FROM
+            activity
+        WHERE
+            activity_name=#{activityName}
+    </select>
+
+    <!--    查询活动项目名和开始时间-->
+    <select id="getActivityNameAndTime" resultType="com.dquav.dquav_platform.entity.BaseActivity">
+        SELECT 
+            activity_name AS activityName,
+            activity_starttime AS activityStartTime
+        FROM 
+            activity
+    </select>
+
+    <!--    删除对应的活动的项目-->
+    <delete id="deleteByActivityId" parameterType="java.lang.Integer">
+        Delete
+        FROM
+            activity
+        WHERE
+            activityid = #{activityId}
+    </delete>
+
+    <!--    更新活动项目-->
+    <update id="updateActivity" parameterType="com.dquav.dquav_platform.entity.Activity">
+        UPDATE
+        activity
+        SET
+            activity_name=#{activityName},
+            activity_starttime=#{activityStartTime},
+            activity_endtime=#{activityEndTime},
+            activity_adds=#{activityAdds},
+            UPDATED_BY=#{updateBy},
+            UPDATED_TIME=#{updateTime}
+        WHERE
+            activityid=#{activityId}
+    </update>
+
+</mapper>

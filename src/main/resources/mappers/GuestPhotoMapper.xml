@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dquav.dquav_platform.mapper.GuestPhotoMapper">
+
+    <!--    添加照片-->
+    <insert id="addPhoto" useGeneratedKeys="true" keyProperty="pid">
+        INSERT INTO guestphoto(pid, activityid, photo_adds)
+        VALUES (#{pid}, #{activityId}, #{photoAdds})
+    </insert>
+
+    <!--    查询照片信息 根据活动项目id-->
+    <select id="getPhotoByActivityId" resultType="com.dquav.dquav_platform.entity.GuestPhoto">
+        SELECT pid,
+               photo_adds AS photoAdds
+        FROM guestphoto
+        WHERE activityid = #{activityId}
+    </select>
+
+    <!--    根据照片id 删除照片-->
+    <delete id="deletePhotoByPid" parameterType="java.lang.Integer">
+        DELETE
+        FROM guestphoto
+        WHERE pid = #{pid}
+    </delete>
+
+    <!--    根据活动项目id 删除照片-->
+    <delete id="deletePhotoById" parameterType="java.lang.Integer">
+        DELETE
+        FROM guestphoto
+        WHERE activityid = #{activityId}
+    </delete>
+
+</mapper>
