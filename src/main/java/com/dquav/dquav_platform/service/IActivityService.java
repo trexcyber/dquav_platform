@@ -1,6 +1,7 @@
 package com.dquav.dquav_platform.service;
 
 import com.dquav.dquav_platform.entity.Activity;
+import com.dquav.dquav_platform.entity.UserList;
 import com.dquav.dquav_platform.service.ex.*;
 
 import java.util.List;
@@ -15,10 +16,12 @@ public interface IActivityService {
 
     /**
      * 添加活动
+     * @param username 用户名
      * @param activity 活动项目数据
+     * @throws UserNotFoundException 抛出用户未找到异常
      * @throws InsertException 抛出插入数据异常
      */
-    void addActivity(Activity activity) throws InsertException;
+    void addActivity(String username,Activity activity) throws UserNotFoundException,InsertException;
 
     /**
      * 查询所有活动

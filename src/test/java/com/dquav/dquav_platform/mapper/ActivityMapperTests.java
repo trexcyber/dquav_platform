@@ -2,13 +2,11 @@ package com.dquav.dquav_platform.mapper;
 
 import com.dquav.dquav_platform.entity.Activity;
 import com.dquav.dquav_platform.entity.BaseActivity;
-import com.dquav.dquav_platform.util.DateFormat;
+import com.dquav.dquav_platform.util.DateThisFormat;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
