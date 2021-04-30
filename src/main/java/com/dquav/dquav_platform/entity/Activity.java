@@ -1,5 +1,7 @@
 package com.dquav.dquav_platform.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 
 /**
@@ -12,19 +14,23 @@ public class Activity {
 
     private Integer activityId;
     private String activityName;
+    @JSONField(format="yyyy/MM/dd")
     private Date activityStartTime;
+    @JSONField(format="yyyy/MM/dd")
     private Date activityEndTime;
     private String activityAdds;
     private Integer isDelete;
     /**
      * 活动创建时间
      */
+    @JSONField(format="yyyy/MM/dd")
     private Date createdTime;
     /**
      * 活动最近更新人
      * 活动最近更新时间
      */
     private String updateBy;
+    @JSONField(format="yyyy/MM/dd")
     private Date updateTime;
 
     @Override

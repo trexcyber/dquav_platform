@@ -2,6 +2,7 @@ package com.dquav.dquav_platform.mapper;
 
 import com.dquav.dquav_platform.entity.Activity;
 import com.dquav.dquav_platform.entity.BaseActivity;
+import com.dquav.dquav_platform.util.DateFormat;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ public class ActivityMapperTests {
     @Test
     public void addActivity(){
         Activity activity = new Activity();
-        activity.setActivityName("陕投三会");
+        activity.setActivityName("陕投三会(测试2)");
         Date date =new Date();
         activity.setActivityStartTime(date);
         activity.setActivityEndTime(date);
@@ -42,7 +43,7 @@ public class ActivityMapperTests {
 
     @Test
     public void getByActivityName(){
-        Activity activity = activityMapper.getByActivityName("陕投三会");
+        Activity activity = activityMapper.getByActivityName("陕西投资集团全国企业会");
         System.out.println(activity);
     }
 
@@ -64,5 +65,12 @@ public class ActivityMapperTests {
             System.out.println(baseActivity);
         }
         System.out.println("end");
+    }
+
+    @Test
+    public void deleteByActivityId(){
+        Integer activityId = 3;
+        Integer rows = activityMapper.deleteByActivityId(activityId);
+        System.out.println(rows);
     }
 }

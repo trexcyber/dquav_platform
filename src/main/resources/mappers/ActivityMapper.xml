@@ -17,7 +17,7 @@
         #{activityName},
         #{activityStartTime},#{activityEndTime},
         #{activityAdds},#{isDelete},
-        #{createdTime},#{updatedBy},
+        #{createdTime},#{updateBy},
         #{updateTime}
         )
     </insert>
@@ -32,7 +32,7 @@
         activity_adds AS activityAdds,
         is_delete AS isDelete,
         CREATED_TIME AS createdTime,
-        UPDATED_BY AS updatedBy,
+        UPDATED_BY AS updateBy,
         UPDATED_TIME AS updateTime
         FROM
             activity
@@ -42,7 +42,8 @@
 
     <!--    查询活动项目名和开始时间-->
     <select id="getActivityNameAndTime" resultType="com.dquav.dquav_platform.entity.BaseActivity">
-        SELECT 
+        SELECT
+            activityid AS activityId,
             activity_name AS activityName,
             activity_starttime AS activityStartTime
         FROM 

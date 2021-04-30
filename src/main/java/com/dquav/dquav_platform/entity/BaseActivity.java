@@ -1,5 +1,8 @@
 package com.dquav.dquav_platform.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -8,15 +11,26 @@ import java.util.Date;
  */
 public class BaseActivity {
 
+    private Integer activityId;
     private String activityName;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date activityStartTime;
 
     @Override
     public String toString() {
         return "BaseActivity{" +
-                "activityName='" + activityName + '\'' +
+                "activityId=" + activityId +
+                ", activityName='" + activityName + '\'' +
                 ", activityStartTime=" + activityStartTime +
                 '}';
+    }
+
+    public Integer getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
     }
 
     public String getActivityName() {
