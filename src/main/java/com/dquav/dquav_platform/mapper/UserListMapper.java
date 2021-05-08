@@ -22,7 +22,7 @@ public interface UserListMapper {
     Integer addUserList(UserList userList);
 
     /**
-     * 查询用户
+     * 查询所有用户
      *
      * @return 用户数据
      */

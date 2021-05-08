@@ -9,6 +9,7 @@ import com.dquav.dquav_platform.service.ex.PasswordNotMatchException;
 import com.dquav.dquav_platform.service.ex.UpdateException;
 import com.dquav.dquav_platform.service.ex.UserNotFoundException;
 import com.dquav.dquav_platform.util.JsonResult;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * <p>
  * 处理用户业务层的实现类
  */
+@Service
 public class UserListServiceImpl implements IUserListService {
 
     @Resource

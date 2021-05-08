@@ -27,7 +27,7 @@
 
     <!--    查询文件名-->
     <select id="getDocNameByActivityId" resultType="com.dquav.dquav_platform.entity.Doc">
-        SELECT docid AS docId, doc_name AS docName
+        SELECT docid AS docId, doc_name AS docName, doc_site AS docSite
         FROM doc
         WHERE activityid = #{activityId}
     </select>
