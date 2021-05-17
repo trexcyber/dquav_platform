@@ -28,21 +28,21 @@ public interface IPackageService {
     /**
      * 根据活动id 获取所有压缩包数据信息
      *
-     * @param activityId 活动id
+     * @param activityName 活动名
      * @return 所有压缩包数据
      * @throws ActivityNotFoundException 活动未找到异常
      */
-    List<PhotoPackage> findPackageByActivityId(Integer activityId) throws ActivityNotFoundException;
+    List<PhotoPackage> findPackageByActivityName(String activityName) throws ActivityNotFoundException;
 
     /**
      * 根据压缩包id 获得压缩包数据信息
      *
-     * @param photoId 压缩包id
+     * @param photoPackageName  压缩包名称
      * @return 压缩包数据信息
      * @throws PackageNotFoundException  压缩包未找到异常
      * @throws ActivityNotFoundException 活动未找到异常
      */
-    PhotoPackage findPackageByPhotoId(Integer photoId) throws PackageNotFoundException;
+    PhotoPackage findPackageByPhotoPackageName(String photoPackageName) throws PackageNotFoundException;
 
     /**
      * 根据压缩包id 删除压缩包数据
@@ -50,24 +50,24 @@ public interface IPackageService {
      * 根据用户等级判断是否执行操作
      *
      * @param uid     用户id
-     * @param photoId 压缩包id
+     * @param photoPackageName 压缩包id
      * @throws UserNotFoundException      用户未找到异常
      * @throws PackageNotFoundException   压缩包未找到异常
      * @throws PackageDeleteFailException 压缩包删除失败异常
      */
-    void removePackageByPhotoId(Integer uid, Integer photoId) throws UserNotFoundException,
+    void removePackageByPhotoPackageName(Integer uid, String photoPackageName) throws UserNotFoundException,
             PackageNotFoundException, PackageDeleteFailException;
 
     /**
      * 根据活动id 删除所有压缩包数据
      *
      * @param uid        用户id
-     * @param activityId 活动id
+     * @param activityName 活动名
      * @throws UserNotFoundException     用户未找到异常
      * @throws ActivityNotFoundException 活动未找到异常
      * @throws PhotoDeleteFailException  照片删除异常
      */
-    void removeAllPackageByActivityId(Integer uid, Integer activityId) throws UserNotFoundException,
+    void removeAllPackageByActivityId(Integer uid, String activityName) throws UserNotFoundException,
             ActivityNotFoundException, PhotoDeleteFailException;
 
 }

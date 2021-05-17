@@ -121,6 +121,7 @@ public class DocController extends BaseController {
         OutputStream outputStream = null;
         InputStream inputStream = null;
         Doc doc = iDocService.findDocByName(docName);
+//        文件存储路径
         String fileName = doc.getIsDelete();
         try {
 //            取出输出流

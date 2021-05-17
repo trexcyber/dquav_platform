@@ -21,6 +21,15 @@
         WHERE photoid = #{photoId}
     </select>
 
+    <select id="getPhotoPackageByPhotoName" resultType="com.dquav.dquav_platform.entity.PhotoPackage">
+        SELECT photoid AS photoId,
+               activityid AS activityId,
+               photopakeage_site AS photoPackageSite,
+               is_guest AS isGuest
+        FROM photopackage
+        WHERE photopakeage_name = #{photoPackageName}
+    </select>
+
     <!--    根据活动项目id查询照片压缩包数据-->
     <select id="getPhotoPackageByActivityId" resultType="com.dquav.dquav_platform.entity.PhotoPackage">
         SELECT photoid AS photoId,

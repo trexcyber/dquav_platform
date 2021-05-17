@@ -31,6 +31,7 @@ public interface GuestPhotoMapper {
      * @return 返回照片数据
      */
     GuestPhoto getPhotoByPid(Integer pid);
+
     /**
      * 删除照片
      * @param pid 照片id

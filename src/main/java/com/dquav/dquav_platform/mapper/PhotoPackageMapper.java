@@ -1,5 +1,6 @@
 package com.dquav.dquav_platform.mapper;
 
+import com.dquav.dquav_platform.entity.GuestPhoto;
 import com.dquav.dquav_platform.entity.PhotoPackage;
 
 import java.util.List;
@@ -32,6 +33,14 @@ public interface PhotoPackageMapper {
      * @return 返回压缩包数据
      */
     PhotoPackage getPhotoPackageByPhotoId(Integer photoId);
+
+
+    /**
+     * 根据压缩包名 查询照片压缩包
+     * @param photoName 压缩包照片名
+     * @return 压缩包数据
+     */
+    PhotoPackage getPhotoPackageByPhotoName(String photoName);
 
     /**
      * 根据照片包名称 删除对应照片包数据
