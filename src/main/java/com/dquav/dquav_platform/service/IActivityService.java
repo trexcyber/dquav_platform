@@ -44,6 +44,13 @@ public interface IActivityService {
     Activity getActivity(String activityName) throws ActivityNotFoundException;
 
     /**
+     * 查询活动项目信息
+     * @param activityId 活动项目id
+     * @return 返回活动项目的数据信息
+     * @throws ActivityNotFoundException 未找到活动项目异常
+     */
+    Activity getActivityById(Integer activityId) throws ActivityNotFoundException;
+    /**
      * 修改活动信息
      *
      * @param oldActivityName   原活动项目名

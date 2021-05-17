@@ -33,24 +33,21 @@ public interface IDocService {
     /**
      * 根据文档名 查询文档
      *
-     * @param username 用户名
      * @param docName 文档名
      * @return 文档数据信息
      * @throws DocNotFoundException 文档未找到异常
      */
-    Doc findDocByName(String username,String docName) throws DocNotFoundException;
+    Doc findDocByName(String docName) throws DocNotFoundException;
 
     /**
      * 根据活动id 获取当前活动下所有文档名称
      *
-     * @param username 用户名
      * @param activityId 活动id
      * @return 所有文档名称
-     * @throws UserNotFoundException 用户未登录异常
      * @throws ActivityNotFoundException 活动不存在异常
      * @throws DocListNotFoundException  未找到文档异常
      */
-    List<Doc> findDocListByActivityId(String username,Integer activityId) throws UserNotFoundException,ActivityNotFoundException, DocListNotFoundException;
+    List<Doc> findDocListByActivityId(Integer activityId) throws ActivityNotFoundException, DocListNotFoundException;
 
     /**
      * 删除文档

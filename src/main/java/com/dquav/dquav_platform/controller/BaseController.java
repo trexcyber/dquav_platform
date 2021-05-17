@@ -15,6 +15,10 @@ public abstract class BaseController {
 
     protected static final Integer SUCCESS = 200;
 
+    protected final Integer getUidFromSession(HttpSession session){
+        return Integer.valueOf(session.getAttribute("uid").toString());
+    }
+
     protected final Integer getActivityIdFromSession(HttpSession session){
         return Integer.valueOf(session.getAttribute("activityId").toString());
     }

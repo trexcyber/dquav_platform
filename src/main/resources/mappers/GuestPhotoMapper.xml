@@ -12,6 +12,14 @@
     </insert>
 
     <!--    查询照片信息 根据活动项目id-->
+    <select id="getPhotoByPid" resultType="com.dquav.dquav_platform.entity.GuestPhoto">
+        SELECT activityId,
+               photo_adds AS photoAdds
+        FROM guestphoto
+        WHERE pid = #{pid}
+    </select>
+
+    <!--    查询照片信息 根据活动项目id-->
     <select id="getPhotoByActivityId" resultType="com.dquav.dquav_platform.entity.GuestPhoto">
         SELECT pid,
                photo_adds AS photoAdds

@@ -39,6 +39,8 @@ public class ActivityServiceImpl implements IActivityService {
         if (user == null) {
             throw new UserNotFoundException("用户未登录");
         }
+//        查询用户等级
+
         Date date = new Date();
         activity.setIsDelete(0);
         activity.setCreatedTime(date);
@@ -80,6 +82,15 @@ public class ActivityServiceImpl implements IActivityService {
     }
 
     @Override
+    public Activity getActivityById(Integer activityId) throws ActivityNotFoundException {
+        Activity activity = activityMapper.getByActivityId(activityId);
+        if (activity == null) {
+            throw new ActivityNotFoundException("活动内容已删除");
+        }
+        return activity;
+    }
+
+    @Override
     public void changeActivity(String oldActivityName, String username, String activityName, Date activityStartTime,
                                Date activityEndTime, String activityAdds) throws UserNotFoundException,
             ActivityNotFoundException, UpdateException {
@@ -87,6 +98,9 @@ public class ActivityServiceImpl implements IActivityService {
         if (user == null) {
             throw new UserNotFoundException("请登录后操作");
         }
+//        查询用户等级
+
+
         Activity oldActivity = activityMapper.getByActivityName(oldActivityName);
         if (oldActivity == null) {
             throw new ActivityNotFoundException("活动内容已删除");
@@ -103,6 +117,8 @@ public class ActivityServiceImpl implements IActivityService {
 
     @Override
     public void removeActivity(String activityName) throws ActivityNotFoundException, ActivityDeleteFailException {
+//        查询用户等级
+
         Activity activity = getActivity(activityName);
         if (activity == null) {
             throw new ActivityNotFoundException("未找到活动");
@@ -110,7 +126,7 @@ public class ActivityServiceImpl implements IActivityService {
         //删除所有子表
 
         Integer rows = activityMapper.deleteByActivityId(activity.getActivityId());
-        if (rows != 1 ){
+        if (rows != 1) {
             throw new ActivityDeleteFailException("删除活动失败，请稍后重试");
         }
     }

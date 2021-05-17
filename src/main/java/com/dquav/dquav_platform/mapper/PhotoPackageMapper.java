@@ -27,6 +27,13 @@ public interface PhotoPackageMapper {
     List<PhotoPackage> getPhotoPackageByActivityId(Integer activityId);
 
     /**
+     * 查询照片包
+     * @param photoId 压缩包id
+     * @return 返回压缩包数据
+     */
+    PhotoPackage getPhotoPackageByPhotoId(Integer photoId);
+
+    /**
      * 根据照片包名称 删除对应照片包数据
      * @param photoId 照片包id
      * @return 返回受影响行数

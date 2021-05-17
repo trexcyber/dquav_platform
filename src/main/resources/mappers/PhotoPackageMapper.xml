@@ -12,6 +12,16 @@
     </insert>
 
     <!--    根据活动项目id查询照片压缩包数据-->
+    <select id="getPhotoPackageByPhotoId" resultType="com.dquav.dquav_platform.entity.PhotoPackage">
+        SELECT activityid AS activityId,
+               photopakeage_name AS photoPackageName,
+               photopakeage_site AS photoPackageSite,
+               is_guest AS isGuest
+        FROM photopackage
+        WHERE photoid = #{photoId}
+    </select>
+
+    <!--    根据活动项目id查询照片压缩包数据-->
     <select id="getPhotoPackageByActivityId" resultType="com.dquav.dquav_platform.entity.PhotoPackage">
         SELECT photoid AS photoId,
                photopakeage_name AS photoPackageName,

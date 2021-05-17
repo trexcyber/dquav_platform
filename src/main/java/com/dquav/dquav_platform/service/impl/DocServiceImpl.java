@@ -28,75 +28,70 @@ public class DocServiceImpl implements IDocService {
     UserListMapper userListMapper;
 
     @Override
-        public void saveDoc(String username, Doc doc) throws UserNotFoundException, InsertException {
-            UserList userResult = userListMapper.getUserListByUsername(username);
-            if (userResult == null){
-                throw new UserNotFoundException("未登录用户");
-            }
-            Integer rows = docMapper.addDoc(doc);
-            if (rows != 1){
-                throw new InsertException("文档上传失败");
-            }
+    public void saveDoc(String username, Doc doc) throws UserNotFoundException, InsertException {
+        UserList userResult = userListMapper.getUserListByUsername(username);
+        if (userResult == null) {
+            throw new UserNotFoundException("未登录用户");
+        }
+        Integer rows = docMapper.addDoc(doc);
+        if (rows != 1) {
+            throw new InsertException("文档上传失败");
+        }
 
     }
 
     @Override
-    public Doc findDocByName(String username,String docName) throws DocNotFoundException {
-        UserList userResult = userListMapper.getUserListByUsername(username);
-        if (userResult == null){
-            throw new UserNotFoundException("未登录用户");
-        }
+    public Doc findDocByName(String docName) throws DocNotFoundException {
         Doc doc = docMapper.getDocByName(docName);
-        if (doc == null){
+        if (doc == null) {
             throw new DocNotFoundException("未找到文档");
         }
         return doc;
     }
 
     @Override
-    public List<Doc> findDocListByActivityId(String username, Integer activityId) throws UserNotFoundException, ActivityNotFoundException, DocListNotFoundException {
-        UserList userResult = userListMapper.getUserListByUsername(username);
-        if (userResult == null){
-            throw new UserNotFoundException("未登录用户");
-        }
+    public List<Doc> findDocListByActivityId(Integer activityId) throws ActivityNotFoundException,
+            DocListNotFoundException {
         return docMapper.getDocNameByActivityId(activityId);
     }
 
     @Override
-    public void removeDoc(String username, String docName) throws UserNotFoundException, DocNotFoundException, DocDeleteFailException {
+    public void removeDoc(String username, String docName) throws UserNotFoundException, DocNotFoundException,
+            DocDeleteFailException {
         UserList userResult = userListMapper.getUserListByUsername(username);
-        if (userResult == null){
+        if (userResult == null) {
             throw new UserNotFoundException("未登录用户");
         }
         Doc doc = docMapper.getDocByName(docName);
-        if (doc == null){
+        if (doc == null) {
             throw new DocNotFoundException("未找到文档");
         }
         Integer docId = doc.getDocId();
         Integer rows = docMapper.deleteDocById(docId);
-        if (rows != 1){
+        if (rows != 1) {
             throw new DocDeleteFailException("文档删除失败");
         }
     }
 
     @Override
-    public void removeDocByActivityName(String username, String activityName) throws UserNotFoundException, ActivityNotFoundException, DocListNotFoundException, DocDeleteFailException {
+    public void removeDocByActivityName(String username, String activityName) throws UserNotFoundException,
+            ActivityNotFoundException, DocListNotFoundException, DocDeleteFailException {
         UserList userResult = userListMapper.getUserListByUsername(username);
-        if (userResult == null){
+        if (userResult == null) {
             throw new UserNotFoundException("未登录用户");
         }
         Activity activityResult = activityMapper.getByActivityName(activityName);
-        if (activityResult == null){
+        if (activityResult == null) {
             throw new ActivityNotFoundException("活动项目已删除");
         }
         Integer activityId = activityResult.getActivityId();
         List<Doc> docs = docMapper.getDocNameByActivityId(activityId);
-        if (docs == null ){
+        if (docs == null) {
             throw new DocNotFoundException("活动下未找到文档");
         }
 
         Integer rows = docMapper.deleteDocByActivityId(activityId);
-        if (rows == 0){
+        if (rows == 0) {
             throw new DocDeleteFailException("活动下文档删除失败");
         }
     }

@@ -12,7 +12,7 @@ public class Doc {
     private Integer activityId;
     private String docName;
     private String docSite;
-    private Integer isDelete;
+    private String isDelete;
 
     @Override
     public String toString() {
@@ -57,11 +57,11 @@ public class Doc {
         this.docSite = docSite;
     }
 
-    public Integer getIsDelete() {
+    public String getIsDelete() {
         return isDelete;
     }
 
-    public void setIsDelete(Integer isDelete) {
+    public void setIsDelete(String isDelete) {
         this.isDelete = isDelete;
     }
 }

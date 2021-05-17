@@ -31,6 +31,16 @@ public interface IUserListService {
     /**
      * 根据用户名查询用户信息
      *
+     * @param uid 用户id
+     * @return 用户数据
+     * @throws UserNotFoundException 未找到匹配的用户名
+     */
+    UserList getByUid(Integer uid) throws UserNotFoundException;
+
+
+    /**
+     * 根据用户名查询用户信息
+     *
      * @param username 用户名
      * @return 用户数据
      * @throws UserNotFoundException 未找到匹配的用户名
@@ -48,9 +58,12 @@ public interface IUserListService {
      * 修改用户信息
      *
      * @param userList 用户信息
+     * @throws UserNotFoundException 用户未找到异常
      * @throws UpdateException 抛出未明确原因 更新异常
      */
     void changeInfo(UserList userList) throws UserNotFoundException, UpdateException;
 
+//    注册 审批 接口
+//    删除 用户 凭等级限制
 
 }

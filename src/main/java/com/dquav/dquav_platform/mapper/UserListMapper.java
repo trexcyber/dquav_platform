@@ -37,6 +37,14 @@ public interface UserListMapper {
     UserList getUserListByUsername(String userName);
 
     /**
+     * 根据用户id 查找用户数据
+     *
+     * @param uid 用户id
+     * @return 返回用户数据
+     */
+    UserList getUserListById(Integer uid);
+
+    /**
      * 删除用户数据
      *
      * @param uid 用户id

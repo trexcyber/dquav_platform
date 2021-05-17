@@ -51,6 +51,16 @@ public class UserListServiceImpl implements IUserListService {
     }
 
     @Override
+    public UserList getByUid(Integer uid) throws UserNotFoundException {
+        UserList result = userListMapper.getUserListById(uid);
+        if (result == null) {
+            throw new UserNotFoundException("用户不存在");
+        }
+
+        return result;
+    }
+
+    @Override
     public List<UserList> getUserList() {
         List<UserList> result = userListMapper.getUserList();
         JsonResult jsonResult = new JsonResult();

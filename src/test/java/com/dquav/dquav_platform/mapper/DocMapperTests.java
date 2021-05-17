@@ -31,7 +31,7 @@ public class DocMapperTests {
         doc.setActivityId(1);
         doc.setDocName("活动方案（内部）");
         doc.setDocSite("c://doc/活动方案、修改");
-        doc.setIsDelete(0);
+        doc.setIsDelete("");
         Integer rows = docMapper.addDoc(doc);
         System.out.println(rows);
     }

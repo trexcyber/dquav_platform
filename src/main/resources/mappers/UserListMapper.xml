@@ -34,6 +34,18 @@
         WHERE username = #{username}
     </select>
 
+    <!--    根据用户id查询用户信息-->
+    <select id="getUserListById" resultType="com.dquav.dquav_platform.entity.UserList">
+        SELECT uid,
+               lid,
+               username,
+               password,
+               name,
+               telephone
+        FROM userlist
+        WHERE uid = #{uid}
+    </select>
+
     <!--    根据用户id 删除用户数据-->
     <delete id="deleteUserByUid" parameterType="java.lang.Integer">
         DELETE

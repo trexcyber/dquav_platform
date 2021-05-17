@@ -26,6 +26,12 @@ public interface GuestPhotoMapper {
     List<GuestPhoto> getPhotoByActivityId(Integer activityId);
 
     /**
+     * 根据pid 查询照片
+     * @param pid 照片id
+     * @return 返回照片数据
+     */
+    GuestPhoto getPhotoByPid(Integer pid);
+    /**
      * 删除照片
      * @param pid 照片id
      * @return 受影响行数
