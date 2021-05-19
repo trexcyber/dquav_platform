@@ -27,7 +27,7 @@ public class JsonResult {
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
         filter.getExcludes().add("activityId");
         filter.getExcludes().add("docSite");
-        filter.getExcludes().add("idDelete");
+        filter.getExcludes().add("isDelete");
 
         return JSON.toJSONString(doc, filter);
     }

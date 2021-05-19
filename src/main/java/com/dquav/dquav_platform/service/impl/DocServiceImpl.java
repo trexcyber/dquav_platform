@@ -33,10 +33,16 @@ public class DocServiceImpl implements IDocService {
         if (userResult == null) {
             throw new UserNotFoundException("未登录用户");
         }
+
+        Doc docResult = docMapper.getDocByName(doc.getDocName());
+        if (docResult != null){
+            throw new InsertException("文件名已存在");
+        }
         Integer rows = docMapper.addDoc(doc);
         if (rows != 1) {
             throw new InsertException("文档上传失败");
         }
+
 
     }
 
@@ -52,6 +58,11 @@ public class DocServiceImpl implements IDocService {
     @Override
     public List<Doc> findDocListByActivityId(Integer activityId) throws ActivityNotFoundException,
             DocListNotFoundException {
+
+        Activity activity =activityMapper.getByActivityId(activityId);
+        if (activity == null){
+            throw new ActivityNotFoundException("未找到活动");
+        }
         return docMapper.getDocNameByActivityId(activityId);
     }
 

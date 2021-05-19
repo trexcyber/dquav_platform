@@ -4,6 +4,7 @@ import com.dquav.dquav_platform.entity.UserList;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户列表的持久层接口
@@ -35,6 +36,13 @@ public interface UserListMapper {
      * @return 返回用户数据
      */
     UserList getUserListByUsername(String userName);
+
+    /**
+     * 根据用户id 查询用户等级名
+     * @param uid 用户id
+     * @return 用户等级名
+     */
+    Map<String, String> getUserLevelByUid (Integer uid);
 
     /**
      * 根据用户id 查找用户数据

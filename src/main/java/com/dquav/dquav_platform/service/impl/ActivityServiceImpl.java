@@ -1,16 +1,13 @@
 package com.dquav.dquav_platform.service.impl;
 
-import com.dquav.dquav_platform.entity.Activity;
-import com.dquav.dquav_platform.entity.BaseActivity;
-import com.dquav.dquav_platform.entity.UserList;
-import com.dquav.dquav_platform.mapper.ActivityMapper;
-import com.dquav.dquav_platform.mapper.UserListMapper;
+import com.dquav.dquav_platform.entity.*;
+import com.dquav.dquav_platform.mapper.*;
 import com.dquav.dquav_platform.service.IActivityService;
 import com.dquav.dquav_platform.service.ex.*;
+import com.dquav.dquav_platform.util.UserLevelLimitUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +22,12 @@ public class ActivityServiceImpl implements IActivityService {
     ActivityMapper activityMapper;
     @Resource
     UserListMapper userListMapper;
+    @Resource
+    DocMapper docMapper;
+    @Resource
+    GuestPhotoMapper guestPhotoMapper;
+    @Resource
+    PhotoPackageMapper photoPackageMapper;
 
     /**
      * 添加活动项目
@@ -34,12 +37,18 @@ public class ActivityServiceImpl implements IActivityService {
      * @throws InsertException 抛出插入数据异常
      */
     @Override
-    public void addActivity(String username, Activity activity) throws UserNotFoundException, InsertException {
+    public void addActivity(String username, Activity activity) throws UserNotFoundException,
+            UserLevelLimitFailException, InsertException {
         UserList user = userListMapper.getUserListByUsername(username);
         if (user == null) {
             throw new UserNotFoundException("用户未登录");
         }
 //        查询用户等级
+
+        Integer userLid = user.getLid();
+        UserLevelLimitUtil userLevelLimitUtil = new UserLevelLimitUtil();
+        userLevelLimitUtil.userLimit(userLid);
+
 
         Date date = new Date();
         activity.setIsDelete(0);
@@ -82,7 +91,7 @@ public class ActivityServiceImpl implements IActivityService {
     }
 
     @Override
-    public Activity getActivityById(Integer activityId) throws ActivityNotFoundException {
+    public Activity findActivityById(Integer activityId) throws ActivityNotFoundException {
         Activity activity = activityMapper.getByActivityId(activityId);
         if (activity == null) {
             throw new ActivityNotFoundException("活动内容已删除");
@@ -93,13 +102,15 @@ public class ActivityServiceImpl implements IActivityService {
     @Override
     public void changeActivity(String oldActivityName, String username, String activityName, Date activityStartTime,
                                Date activityEndTime, String activityAdds) throws UserNotFoundException,
-            ActivityNotFoundException, UpdateException {
+            ActivityNotFoundException, UserLevelLimitFailException, UpdateException {
         UserList user = userListMapper.getUserListByUsername(username);
         if (user == null) {
             throw new UserNotFoundException("请登录后操作");
         }
 //        查询用户等级
-
+        Integer userLid = user.getLid();
+        UserLevelLimitUtil userLevelLimitUtil = new UserLevelLimitUtil();
+        userLevelLimitUtil.userLimit(userLid);
 
         Activity oldActivity = activityMapper.getByActivityName(oldActivityName);
         if (oldActivity == null) {
@@ -116,14 +127,48 @@ public class ActivityServiceImpl implements IActivityService {
     }
 
     @Override
-    public void removeActivity(String activityName) throws ActivityNotFoundException, ActivityDeleteFailException {
+    public void removeActivity(String username,String activityName) throws ActivityNotFoundException, ActivityDeleteFailException {
+        UserList user = userListMapper.getUserListByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException("请登录后操作");
+        }
 //        查询用户等级
+        Integer userLid = user.getLid();
+        UserLevelLimitUtil userLevelLimitUtil = new UserLevelLimitUtil();
+        userLevelLimitUtil.userLimit(userLid);
+
 
         Activity activity = getActivity(activityName);
         if (activity == null) {
             throw new ActivityNotFoundException("未找到活动");
         }
+        Integer activityId = activity.getActivityId();
+
         //删除所有子表
+        List<Doc> docList = docMapper.getDocNameByActivityId(activityId);
+        if (!docList.isEmpty()) {
+            Integer docResult = docList.size();
+            Integer docRows = docMapper.deleteDocByActivityId(activityId);
+            if (!docRows.equals(docResult)) {
+                throw new DocDeleteFailException("删除活动下文档失败");
+            }
+        }
+        List<GuestPhoto> photoList = guestPhotoMapper.getPhotoByActivityId(activityId);
+        if (!photoList.isEmpty()) {
+            Integer guestResult = photoList.size();
+            Integer guestRows = guestPhotoMapper.deletePhotoById(activityId);
+            if (!guestRows.equals(guestResult)) {
+                throw new PhotoDeleteFailException("删除活动下照片失败");
+            }
+        }
+        List<PhotoPackage> photoPackageList = photoPackageMapper.getPhotoPackageByActivityId(activityId);
+        if (!photoPackageList.isEmpty()) {
+            Integer packageResult = photoPackageList.size();
+            Integer packageRows = photoPackageMapper.deletePhotoPackageById(activityId);
+            if (!packageRows.equals(packageResult)) {
+                throw new PackageDeleteFailException("删除活动下压缩包失败");
+            }
+        }
 
         Integer rows = activityMapper.deleteByActivityId(activity.getActivityId());
         if (rows != 1) {

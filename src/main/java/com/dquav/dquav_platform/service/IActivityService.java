@@ -22,9 +22,11 @@ public interface IActivityService {
      * @param username 用户名
      * @param activity 活动项目数据
      * @throws UserNotFoundException 抛出用户未找到异常
+     * @throws UserLevelLimitFailException 用户等级限制异常
      * @throws InsertException       抛出插入数据异常
      */
-    void addActivity(String username, Activity activity) throws UserNotFoundException, InsertException;
+    void addActivity(String username, Activity activity) throws UserNotFoundException, UserLevelLimitFailException,
+            InsertException;
 
     /**
      * 查询所有活动
@@ -45,11 +47,13 @@ public interface IActivityService {
 
     /**
      * 查询活动项目信息
+     *
      * @param activityId 活动项目id
      * @return 返回活动项目的数据信息
      * @throws ActivityNotFoundException 未找到活动项目异常
      */
-    Activity getActivityById(Integer activityId) throws ActivityNotFoundException;
+    Activity findActivityById(Integer activityId) throws ActivityNotFoundException;
+
     /**
      * 修改活动信息
      *
@@ -70,11 +74,12 @@ public interface IActivityService {
     /**
      * 根据活动id 删除活动项目
      *
+     * @param username 用户名
      * @param activityName 活动项目id
      * @throws ActivityNotFoundException   抛出未找到活动项目异常
      * @throws ActivityDeleteFailException 抛出活动删除失败异常
      */
-    void removeActivity(String activityName) throws ActivityNotFoundException, ActivityDeleteFailException;
+    void removeActivity(String username ,String activityName) throws ActivityNotFoundException, ActivityDeleteFailException;
 
 
 }

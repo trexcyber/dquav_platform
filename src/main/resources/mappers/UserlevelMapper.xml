@@ -18,6 +18,13 @@
         FROM userlevel
     </select>
 
+    <!--    查询用户等级数据-->
+    <select id="findUserLevel" resultType="com.dquav.dquav_platform.entity.UserLevel">
+        SELECT level_name AS levelName
+        FROM userlevel
+        WHERE lid =#{lid}
+    </select>
+
     <!--    删除用户等级-->
     <delete id="deleteUserLevelByLid" parameterType="java.lang.Integer">
         DELETE

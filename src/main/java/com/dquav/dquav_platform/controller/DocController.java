@@ -72,7 +72,7 @@ public class DocController extends BaseController {
         UserList userList = iUserListService.getByUid(uid);
         String username = userList.getUsername();
 //        判断活动项目是否创建
-        iActivityService.getActivityById(activityId);
+        iActivityService.findActivityById(activityId);
 //        创建一个doc对象
         Doc doc = new Doc();
 

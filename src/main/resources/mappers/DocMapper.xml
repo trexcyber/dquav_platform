@@ -18,6 +18,7 @@
     <!--    查询文件数据-->
     <select id="getDocByName" resultType="com.dquav.dquav_platform.entity.Doc">
         SELECT docid     AS docId,
+               activityid AS activityId,
                doc_name  AS docName,
                doc_site  AS docSite,
                is_delete AS isDelete
@@ -27,7 +28,11 @@
 
     <!--    查询文件名-->
     <select id="getDocNameByActivityId" resultType="com.dquav.dquav_platform.entity.Doc">
-        SELECT docid AS docId, doc_name AS docName, doc_site AS docSite
+        SELECT docid     AS docId,
+               activityid AS activityId,
+               doc_name  AS docName,
+               doc_site  AS docSite,
+               is_delete AS isDelete
         FROM doc
         WHERE activityid = #{activityId}
     </select>

@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author TrEx
@@ -19,25 +20,55 @@ public class UserListMapperTests {
 
     @Resource
     UserListMapper userListMapper;
+    @Resource
+    UserLevelMapper userLevelMapper;
 
     @Test
     public void addUserList() {
         UserList user = new UserList();
-        user.setLid(1);
-        user.setUsername("fyun");
+        user.setLid(3);
+        user.setUsername("123123");
         user.setPassword("dquav123");
-        user.setName("方云");
+        user.setName("顾客");
         user.setTelephone("13319233029");
         Integer rows = userListMapper.addUserList(user);
         System.out.println(rows);
     }
 
     @Test
-    public void getUserList(){
+    public void getUserList() {
         List<UserList> userLists = userListMapper.getUserList();
         for (UserList userList : userLists) {
             System.out.println(userList);
         }
+    }
+
+    @Test
+    public void getUserLevelByUid() {
+        Integer uid = 4;
+        Map<String, String> user = userListMapper.getUserLevelByUid(uid);
+        String levelName = String.valueOf(user.get("levelName"));
+        System.out.println(levelName);
+
+        String lName1 = userLevelMapper.findUserLevel(1).getLevelName();
+        String lName2 = userLevelMapper.findUserLevel(2).getLevelName();
+
+        if (!levelName.equals(lName1)){
+            System.out.println("1111");
+        }
+        if (!levelName.equals(lName2)){
+            System.out.println("2222");
+        }
+
+        if (!levelName.equals(lName1)||!levelName.equals(lName2)){
+            System.out.println("或");
+        }
+
+        if (!levelName.equals(lName1)&&!levelName.equals(lName2)){
+            System.out.println("都");
+        }
+        System.out.println("end");
+
     }
 
     @Test
@@ -61,10 +92,10 @@ public class UserListMapperTests {
         Integer lid = 1;
         String username = "trexcyber";
         String password = "dquav";
-        String name ="高壮";
+        String name = "高壮";
         String telephone = "18992879000";
 
-        Integer rows = userListMapper.updateUserByUid(uid,lid,username,password,name,telephone);
+        Integer rows = userListMapper.updateUserByUid(uid, lid, username, password, name, telephone);
         System.out.println(rows);
     }
 

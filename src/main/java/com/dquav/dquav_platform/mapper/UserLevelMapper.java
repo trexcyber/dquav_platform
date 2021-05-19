@@ -26,6 +26,13 @@ public interface UserLevelMapper {
     List<UserLevel> getUserLevel();
 
     /**
+     * 查询用户等级
+     * @param lid 等级id
+     * @return 返回用户等级数据
+     */
+    UserLevel findUserLevel(Integer lid);
+
+    /**
      * 删除对应用户等级
      *
      * @param lid 用户等级id
