@@ -115,6 +115,14 @@ public class DocController extends BaseController {
         return new ResponseResult<>(SUCCESS);
     }
 
+    /**
+     * 下载文档
+     * @param activityId 活动id
+     * @param docName 文件名
+     * @param response 后端响应
+     * @param request 后端请求
+     * @return 返回需下载文件
+     */
     @RequestMapping("download")
     public ResponseResult<Object> downloadFile(@RequestParam("activity_id") Integer activityId, @RequestParam(
             "doc_name") String docName, final HttpServletResponse response, final HttpServletRequest request) {

@@ -12,6 +12,7 @@ import com.dquav.dquav_platform.service.IActivityService;
 import com.dquav.dquav_platform.service.IGuestPhotoService;
 import com.dquav.dquav_platform.service.IUserListService;
 import com.dquav.dquav_platform.service.ex.*;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
  * @author TrEx
  * @date 2021/5/14 - 10:03
  */
+@Service
 public class GuestServiceImpl implements IGuestPhotoService {
 
     @Resource

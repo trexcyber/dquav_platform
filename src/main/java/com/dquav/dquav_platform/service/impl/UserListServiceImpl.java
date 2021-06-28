@@ -77,14 +77,13 @@ public class UserListServiceImpl implements IUserListService {
         if (result == null){
             throw new UserNotFoundException("用户不存在");
         }
-        Integer uid = userList.getUid();
-        Integer lid = userList.getLid();
+        Integer uid = result.getUid();
+        Integer lid = result.getLid();
         String username = userList.getUsername();
         String password = userList.getPassword();
         String name = userList.getName();
         String telephone = userList.getTelephone();
         Integer rows = userListMapper.updateUserByUid(uid, lid, username, password, name, telephone);
-
         if (rows != 1) {
             throw new UpdateException("用户信息更新异常");
         }

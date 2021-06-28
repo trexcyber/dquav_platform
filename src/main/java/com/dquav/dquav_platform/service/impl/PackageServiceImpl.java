@@ -11,6 +11,7 @@ import com.dquav.dquav_platform.service.IPackageService;
 import com.dquav.dquav_platform.service.ex.*;
 import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
  * @author TrEx
  * @date 2021/5/14 - 11:06
  */
+@Service
 public class PackageServiceImpl implements IPackageService {
 
     @Resource
@@ -29,8 +31,8 @@ public class PackageServiceImpl implements IPackageService {
     PhotoPackageMapper photoPackageMapper;
 
     @Override
-    public void savePackage(Integer uid, String activityName, PhotoPackage photoPackage) throws UserNotFoundException
-            , ActivityNotFoundException, InsertException {
+    public void savePackage(Integer uid, String activityName, String photoPackageName, String photoPackageSite) throws UserNotFoundException
+            , ActivityNotFoundException, InsertException ,PackageNullException{
         UserList result = userListMapper.getUserListById(uid);
         if (result == null) {
             throw new UserNotFoundException("用户未找到");
@@ -39,6 +41,17 @@ public class PackageServiceImpl implements IPackageService {
         if (activity == null) {
             throw new ActivityNotFoundException("活动未找到");
         }
+        if (photoPackageName==null|"".equals(photoPackageName)){
+            throw new PackageNullException("上传压缩包信息不全");
+        }
+        if (photoPackageSite==null||"".equals(photoPackageSite)){
+            throw new PackageNullException("上传压缩包信息不全异常");
+        }
+        Integer activityId = activity.getActivityId();
+        PhotoPackage photoPackage =new PhotoPackage();
+        photoPackage.setActivityId(activityId);
+        photoPackage.setPhotoPackageName(photoPackageName);
+        photoPackage.setPhotoPackageSite(photoPackageSite);
         Integer rows = photoPackageMapper.addPhotoPackage(photoPackage);
         if (rows == null) {
             throw new InsertException("添加失败");
