@@ -15,6 +15,16 @@
                 #{isDelete})
     </insert>
 
+    <select id="getDocByActivityId" resultType="com.dquav.dquav_platform.entity.Doc">
+        SELECT docid AS docId,
+               activityid AS activityId,
+               doc_name AS docName,
+               doc_site AS docSite,
+               is_delete AS isDelete
+        FROM doc
+        WHERE activityid=#{activityId} AND doc_name =#{docName}
+    </select>
+
     <!--    查询文件数据-->
     <select id="getDocByName" resultType="com.dquav.dquav_platform.entity.Doc">
         SELECT docid     AS docId,

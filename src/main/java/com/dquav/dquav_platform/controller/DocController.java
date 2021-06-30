@@ -16,10 +16,7 @@ import com.dquav.dquav_platform.util.ResponseResult;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.apache.tomcat.util.http.fileupload.util.Streams;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -29,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -49,6 +47,36 @@ public class DocController extends BaseController {
     private static final long UPLOAD_MAX_SIZE = 30 * 1024 * 1024;
 
     private final static String ROOT_PATH = System.getProperty("user.home") + File.separator;
+
+
+    /**
+     * 获取活动项目下的文档列表
+     *
+     * @param activityId 活动id
+     * @return 返回文档列表
+     */
+    @GetMapping("/")
+    public ResponseResult<List<Doc>> docListByActivity(@RequestParam("activity_id") Integer activityId) {
+        List<Doc> docList = iDocService.findDocListByActivityId(activityId);
+        return new ResponseResult<>(SUCCESS, docList);
+    }
+
+    /**
+     * 删除文档
+     * @param activityId 项目id
+     * @param docName 文档名
+     * @param session 用户名
+     * @return 删除成功后的状态
+     */
+    @PostMapping("remove")
+    public ResponseResult<Void> deleteDoc(@RequestParam("activityid") Integer activityId,
+                                          @RequestParam("doc_name") String docName,
+                                          HttpSession session){
+        String username=getUsernameFromSession(session);
+        Doc doc =iDocService.findDocByActivityIdAndDocName(activityId,docName);
+        iDocService.removeDoc(username,docName);
+        return new ResponseResult<>(SUCCESS);
+    }
 
     /**
      * 上传文档
@@ -117,10 +145,11 @@ public class DocController extends BaseController {
 
     /**
      * 下载文档
+     *
      * @param activityId 活动id
-     * @param docName 文件名
-     * @param response 后端响应
-     * @param request 后端请求
+     * @param docName    文件名
+     * @param response   后端响应
+     * @param request    后端请求
      * @return 返回需下载文件
      */
     @RequestMapping("download")
@@ -128,8 +157,8 @@ public class DocController extends BaseController {
             "doc_name") String docName, final HttpServletResponse response, final HttpServletRequest request) {
         OutputStream outputStream = null;
         InputStream inputStream = null;
-        Doc doc = iDocService.findDocByName(docName);
-//        文件存储路径
+        Doc doc = iDocService.findDocByActivityIdAndDocName(activityId, docName);
+//        获取文件存储路径
         String fileName = doc.getIsDelete();
         try {
 //            取出输出流

@@ -28,6 +28,14 @@ public interface DocMapper {
     Doc getDocByName(String docName);
 
     /**
+     * 根据活动项目查询某个文件
+     * @param activityId 活动项目
+     * @param docName 文件名
+     * @return 返回文件信息
+     */
+    Doc getDocByActivityId(Integer activityId, String docName);
+
+    /**
      * 查询文件名
      * @param activityId 活动项目id
      * @return 返回所对应的文件数据

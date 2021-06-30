@@ -56,6 +56,19 @@ public class DocServiceImpl implements IDocService {
     }
 
     @Override
+    public Doc findDocByActivityIdAndDocName(Integer activityId, String docName) throws ActivityNotFoundException, DocNotFoundException {
+        Activity activity =activityMapper.getByActivityId(activityId);
+        if (activity == null){
+            throw new ActivityNotFoundException("未找到活动");
+        }
+        Doc doc = docMapper.getDocByActivityId(activityId,docName);
+        if (doc ==null){
+            throw new DocNotFoundException("活动下该文档资源丢失！");
+        }
+        return doc;
+    }
+
+    @Override
     public List<Doc> findDocListByActivityId(Integer activityId) throws ActivityNotFoundException,
             DocListNotFoundException {
 

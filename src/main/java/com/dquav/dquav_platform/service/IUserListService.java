@@ -4,6 +4,7 @@ import com.dquav.dquav_platform.entity.UserList;
 import com.dquav.dquav_platform.mapper.UserListMapper;
 import com.dquav.dquav_platform.service.ex.PasswordNotMatchException;
 import com.dquav.dquav_platform.service.ex.UpdateException;
+import com.dquav.dquav_platform.service.ex.UserLevelLimitFailException;
 import com.dquav.dquav_platform.service.ex.UserNotFoundException;
 
 import javax.annotation.Resource;
@@ -29,7 +30,7 @@ public interface IUserListService {
     String login(String username, String password) throws UserNotFoundException, PasswordNotMatchException;
 
     /**
-     * 根据用户名查询用户信息
+     * 根据用户id查询用户信息
      *
      * @param uid 用户id
      * @return 用户数据
@@ -48,11 +49,12 @@ public interface IUserListService {
     UserList getByUsername(String username) throws UserNotFoundException;
 
     /**
-     * 查询所有用户信息
-     *
-     * @return 所有用户信息
+     * 查询所有用户列表
+     * @param uid 查询的用户id
+     * @return 返回查询结果
+     * @throws UserLevelLimitFailException 查询的用户等级不够
      */
-    List<UserList> getUserList();
+    List<UserList> getUserList(Integer uid)throws UserLevelLimitFailException;
 
     /**
      * 修改用户信息

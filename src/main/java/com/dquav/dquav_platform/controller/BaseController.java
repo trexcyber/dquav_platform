@@ -19,6 +19,10 @@ public abstract class BaseController {
         return Integer.valueOf(session.getAttribute("uid").toString());
     }
 
+    protected final String getUsernameFromSession(HttpSession session){
+        return String.valueOf(session.getAttribute("username").toString());
+    }
+
     protected final Integer getActivityIdFromSession(HttpSession session){
         return Integer.valueOf(session.getAttribute("activityId").toString());
     }

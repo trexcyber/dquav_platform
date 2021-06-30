@@ -40,6 +40,16 @@ public interface IDocService {
     Doc findDocByName(String docName) throws DocNotFoundException;
 
     /**
+     * 寻找活动项目下文档
+     * @param activityId 活动id
+     * @param docName 文档名
+     * @return 返回文档数据
+     * @throws ActivityNotFoundException 未找到活动项目异常
+     * @throws DocNotFoundException 未找到文档异常
+     */
+    Doc findDocByActivityIdAndDocName(Integer activityId,String docName) throws ActivityNotFoundException,DocNotFoundException;
+
+    /**
      * 根据活动id 获取当前活动下所有文档名称
      *
      * @param activityId 活动id
