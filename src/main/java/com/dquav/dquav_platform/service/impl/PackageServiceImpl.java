@@ -31,33 +31,43 @@ public class PackageServiceImpl implements IPackageService {
     PhotoPackageMapper photoPackageMapper;
 
     @Override
-    public void savePackage(Integer uid, String activityName, String photoPackageName, String photoPackageSite) throws UserNotFoundException
+    public void savePackage(Integer uid,PhotoPackage photoPackage) throws UserNotFoundException
             , ActivityNotFoundException, InsertException ,PackageNullException{
         UserList result = userListMapper.getUserListById(uid);
         if (result == null) {
             throw new UserNotFoundException("用户未找到");
         }
-        Activity activity = activityMapper.getByActivityName(activityName);
+        Activity activity = activityMapper.getByActivityId(photoPackage.getActivityId());
         if (activity == null) {
             throw new ActivityNotFoundException("活动未找到");
         }
-        if (photoPackageName==null|"".equals(photoPackageName)){
+        if (photoPackage.getPhotoPackageName()==null|"".equals(photoPackage.getPhotoPackageName())){
             throw new PackageNullException("上传压缩包信息不全");
         }
-        if (photoPackageSite==null||"".equals(photoPackageSite)){
+        if (photoPackage.getPhotoPackageSite()==null||"".equals(photoPackage.getPhotoPackageSite())){
             throw new PackageNullException("上传压缩包信息不全异常");
         }
-        Integer activityId = activity.getActivityId();
-        PhotoPackage photoPackage =new PhotoPackage();
-        photoPackage.setActivityId(activityId);
-        photoPackage.setPhotoPackageName(photoPackageName);
-        photoPackage.setPhotoPackageSite(photoPackageSite);
+
         Integer rows = photoPackageMapper.addPhotoPackage(photoPackage);
         if (rows == null) {
             throw new InsertException("添加失败");
         }
 
     }
+
+    @Override
+    public PhotoPackage findPackageByActivityIdAndDocName(Integer activityId, String photoPackageName) throws ActivityNotFoundException, DocNotFoundException {
+
+        if (activityMapper.getByActivityId(activityId) == null){
+            throw new ActivityNotFoundException("未找到活动");
+        }
+        PhotoPackage photoPackage = photoPackageMapper.getPackageByActivityId(activityId,photoPackageName);
+        if (photoPackage ==null){
+            throw new DocNotFoundException("活动下该文档资源丢失！");
+        }
+        return photoPackage;
+    }
+
 
     @Override
     public List<PhotoPackage> findPackageByActivityName(String activityName) throws ActivityNotFoundException {

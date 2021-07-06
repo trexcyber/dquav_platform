@@ -34,6 +34,14 @@ public interface PhotoPackageMapper {
      */
     PhotoPackage getPhotoPackageByPhotoId(Integer photoId);
 
+    /**
+     * 查询照片包
+     * @param activityId 活动id
+     * @param photoPackageName 照片包名称
+     * @return 返回对应照片包的数据
+     */
+    PhotoPackage getPackageByActivityId(Integer activityId,String photoPackageName);
+
 
     /**
      * 根据压缩包名 查询照片压缩包

@@ -26,10 +26,13 @@ public class PhotoPackageServiceTests {
     public void savePackage(){
         try {
             Integer uid = 2;
+            PhotoPackage photoPackage = new PhotoPackage();
             String activityName ="陕西投资集团全国企业会";
             String photoPackageName = "文件夹1.zip";
             String photoPackageSite ="d://文件夹.zip";
-            iPackageService.savePackage(uid,activityName,photoPackageName,photoPackageSite);
+            photoPackage.setPhotoPackageName(photoPackageName);
+            photoPackage.setPhotoPackageSite(photoPackageSite);
+            iPackageService.savePackage(uid,photoPackage);
             System.out.println("ok");
 
         }catch (ServiceException e){

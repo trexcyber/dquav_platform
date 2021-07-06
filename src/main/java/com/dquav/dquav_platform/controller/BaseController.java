@@ -1,6 +1,6 @@
 package com.dquav.dquav_platform.controller;
 
-import com.dquav.dquav_platform.controller.ex.UploadException;
+import com.dquav.dquav_platform.controller.ex.*;
 import com.dquav.dquav_platform.service.ex.*;
 import com.dquav.dquav_platform.util.ResponseResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -57,6 +57,51 @@ public abstract class BaseController {
         }
         if (e instanceof UserNotFoundException){
             responseResult.setState(409);
+        }
+        if (e instanceof ActivityDeleteFailException){
+            responseResult.setState(410);
+        }
+        if (e instanceof PackageDeleteFailException){
+            responseResult.setState(411);
+        }
+        if (e instanceof PackageNotFoundException){
+            responseResult.setState(412);
+        }
+        if (e instanceof PackageNullException){
+            responseResult.setState(413);
+        }
+        if (e instanceof PasswordNotMatchException){
+            responseResult.setState(414);
+        }
+        if (e instanceof PhotoDeleteFailException){
+            responseResult.setState(415);
+        }
+        if (e instanceof PhotoNotFoundException){
+            responseResult.setState(416);
+        }
+        if (e instanceof ServiceException){
+            responseResult.setState(500);
+        }
+        if (e instanceof UpdateException){
+            responseResult.setState(501);
+        }
+        if (e instanceof UserLevelLimitFailException){
+            responseResult.setState(417);
+        }
+        if (e instanceof FileSizeException){
+            responseResult.setState(505);
+        }
+        if (e instanceof FileStateException){
+            responseResult.setState(506);
+        }
+        if (e instanceof FileUploadIoException){
+            responseResult.setState(507);
+        }
+        if (e instanceof FlieEmptyException){
+            responseResult.setState(508);
+        }
+        if (e instanceof UploadException){
+            responseResult.setState(509);
         }
         return responseResult;
     }

@@ -15,16 +15,14 @@ public interface IPackageService {
     /**
      * 保存压缩包
      *
-     * @param uid              用户id
-     * @param activityName     活动名
-     * @param photoPackageName 压缩包名称
-     * @param photoPackageSite 压缩包地址
+     * @param uid          用户id
+     * @param photoPackage 压缩包对象
      * @throws ActivityNotFoundException 活动未找到异常
      * @throws UserNotFoundException     用户未找到异常
      * @throws InsertException           添加压缩包异常
      * @throws PackageNullException      压缩包上传信息不全异常
      */
-    void savePackage(Integer uid, String activityName, String photoPackageName, String photoPackageSite) throws UserNotFoundException,
+    void savePackage(Integer uid, PhotoPackage photoPackage) throws UserNotFoundException,
             ActivityNotFoundException, InsertException, PackageNullException;
 
     /**
@@ -35,6 +33,9 @@ public interface IPackageService {
      * @throws ActivityNotFoundException 活动未找到异常
      */
     List<PhotoPackage> findPackageByActivityName(String activityName) throws ActivityNotFoundException;
+
+    PhotoPackage findPackageByActivityIdAndDocName(Integer activityId, String photoPackageName) throws ActivityNotFoundException, DocNotFoundException;
+
 
     /**
      * 根据压缩包id 获得压缩包数据信息

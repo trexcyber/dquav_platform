@@ -5,6 +5,10 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author trex
+ *
+ */
 @SpringBootApplication
 @MapperScan("com.dquav.dquav_platform.mapper")
 public class DquavPlatformApplication {

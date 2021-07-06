@@ -12,7 +12,7 @@ public class PhotoPackage {
     private Integer activityId;
     private String photoPackageName;
     private String photoPackageSite;
-    private Integer isGuest;
+    private String isGuest;
 
     @Override
     public String toString() {
@@ -57,11 +57,11 @@ public class PhotoPackage {
         this.photoPackageSite = photoPackageSite;
     }
 
-    public Integer getIsGuest() {
+    public String getIsGuest() {
         return isGuest;
     }
 
-    public void setIsGuest(Integer isGuest) {
+    public void setIsGuest(String isGuest) {
         this.isGuest = isGuest;
     }
 }

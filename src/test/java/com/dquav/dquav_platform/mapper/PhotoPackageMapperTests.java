@@ -26,7 +26,7 @@ public class PhotoPackageMapperTests {
         photoPackage.setActivityId(1);
         photoPackage.setPhotoPackageName("(测试)陕投三会活动现场照片");
         photoPackage.setPhotoPackageSite("c://photo/stshdfsdf");
-        photoPackage.setIsGuest(1);
+        photoPackage.setIsGuest("123");
         Integer rows = photoPackageMapper.addPhotoPackage(photoPackage);
         System.out.println(rows);
     }

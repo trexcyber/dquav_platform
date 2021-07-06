@@ -26,7 +26,7 @@ public class UserController extends BaseController {
     private JsonResult jsonResult = new JsonResult();
 
 
-    @PostMapping("login")
+    @RequestMapping("login")
     public ResponseResult<String>login(String username, String password, HttpSession session){
         String user =iUserListService.login(username, password);
         session.setAttribute("uid", jsonResult.getUserUid(user));

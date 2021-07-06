@@ -61,7 +61,7 @@ public class UserListServiceTests {
     @Test
     public void getUserList(){
         try {
-            List<UserList> userList=iUserListService.getUserList();
+            List<UserList> userList=iUserListService.getUserList(1);
             for (UserList list : userList) {
                 System.out.println(list);
             }

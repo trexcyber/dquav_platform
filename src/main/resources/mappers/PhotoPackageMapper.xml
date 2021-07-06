@@ -21,6 +21,16 @@
         WHERE photoid = #{photoId}
     </select>
 
+    <select id="getPackageByActivityId" resultType="com.dquav.dquav_platform.entity.PhotoPackage">
+        SELECT photoid AS photoId,
+               activityid AS activityId,
+               photopakeage_name AS photoPackageName,
+               photopakeage_site AS photoPackageSite,
+               is_guest AS isGuest
+        FROM photopackage
+        WHERE activityid=#{activityId} AND photopakeage_name =#{photoPackageName}
+    </select>
+
     <select id="getPhotoPackageByPhotoName" resultType="com.dquav.dquav_platform.entity.PhotoPackage">
         SELECT photoid AS photoId,
                activityid AS activityId,
