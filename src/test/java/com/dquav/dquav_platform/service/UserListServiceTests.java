@@ -2,6 +2,7 @@ package com.dquav.dquav_platform.service;
 
 import com.dquav.dquav_platform.entity.UserList;
 import com.dquav.dquav_platform.service.ex.ServiceException;
+import com.dquav.dquav_platform.util.JsonResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,18 +22,18 @@ public class UserListServiceTests {
     @Resource
     IUserListService iUserListService;
 
-    @Test
-    public void login() {
-        try {
-            String username = "trex";
-            String password = "000";
-            String userList = iUserListService.login(username, password);
-            System.out.println(userList);
-        } catch (ServiceException e) {
-            System.out.println(e.getClass().getName());
-            System.out.println(e.getMessage());
-        }
-    }
+//    @Test
+//    public void login() {
+//        try {
+//            String username = "trex";
+//            String password = "000";
+//            String userList = iUserListService.login(username, password);
+//            System.out.println(userList);
+//        } catch (ServiceException e) {
+//            System.out.println(e.getClass().getName());
+//            System.out.println(e.getMessage());
+//        }
+//    }
 
     @Test
     public void getByUid() {
@@ -40,7 +41,22 @@ public class UserListServiceTests {
             Integer uid = 3;
             UserList user = iUserListService.getByUid(uid);
             System.out.println(user);
+            JsonResult jsonResult = new JsonResult();
+            System.out.println(jsonResult.userListJsonFilter(user));
         } catch (ServiceException e) {
+            System.out.println(e.getClass().getName());
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void get(){
+        try {
+            Integer uid =3;
+            UserList userList =iUserListService.getByUid(uid);
+            JsonResult jsonResult = new JsonResult();
+            System.out.println(jsonResult.userListJsonFilter(userList));
+        }catch (ServiceException e){
             System.out.println(e.getClass().getName());
             System.out.println(e.getMessage());
         }

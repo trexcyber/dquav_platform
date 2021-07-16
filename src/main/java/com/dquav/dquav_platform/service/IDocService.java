@@ -3,6 +3,7 @@ package com.dquav.dquav_platform.service;
 import com.dquav.dquav_platform.entity.Doc;
 import com.dquav.dquav_platform.mapper.DocMapper;
 import com.dquav.dquav_platform.service.ex.*;
+import org.apache.commons.io.FileExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public interface IDocService {
      * @throws UserNotFoundException 用户未登录异常
      * @throws InsertException       添加异常
      */
-    void saveDoc(String username,Doc doc) throws UserNotFoundException, InsertException;
+    void saveDoc(String username,Doc doc) throws UserNotFoundException,  InsertException;
 
     /**
      * 根据文档名 查询文档

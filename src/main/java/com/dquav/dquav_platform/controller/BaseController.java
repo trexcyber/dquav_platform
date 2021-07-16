@@ -15,12 +15,22 @@ public abstract class BaseController {
 
     protected static final Integer SUCCESS = 200;
 
+    protected  static  final Integer ERROR = 444;
+
     protected final Integer getUidFromSession(HttpSession session){
-        return Integer.valueOf(session.getAttribute("uid").toString());
-    }
+        Object number = session.getAttribute("uid");
+        if (number == null){
+            throw new UserNotFoundException("登录超时");
+        }
+        return Integer.valueOf(number.toString());
+        }
 
     protected final String getUsernameFromSession(HttpSession session){
-        return String.valueOf(session.getAttribute("username").toString());
+        Object name =session.getAttribute("username");
+        if (name == null){
+            throw new UserNotFoundException("登录超时");
+        }
+        return String.valueOf(name.toString());
     }
 
     protected final Integer getActivityIdFromSession(HttpSession session){

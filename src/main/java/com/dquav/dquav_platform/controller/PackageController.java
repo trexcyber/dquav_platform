@@ -38,40 +38,44 @@ public class PackageController extends BaseController {
     IUserListService iUserListService;
     @Resource
     IActivityService iActivityService;
+    @Resource
+    UploadAndDownloadUtil uploadAndDownloadUtil;
 
     private static final long UPLOAD_MAX_SIZE = 30 * 1024 * 1024;
 
     private final static String ROOT_PATH = System.getProperty("user.home") + File.separator;
 
     @PostMapping("/")
-    public ResponseResult<List<PhotoPackage>> allPackage(String activityName) {
+    public ResponseResult<List<PhotoPackage>> allPackage(@RequestParam("activity_name") String activityName) {
         List<PhotoPackage> data = iPackageService.findPackageByActivityName(activityName);
         return new ResponseResult<>(SUCCESS, data);
     }
 
     @PostMapping("this")
-    public ResponseResult<PhotoPackage> packageResponseResult(String photoPackageName) {
+    public ResponseResult<PhotoPackage> packageResponseResult(@RequestParam("package_name") String photoPackageName) {
         return new ResponseResult<>(SUCCESS, iPackageService.findPackageByPhotoPackageName(photoPackageName));
     }
 
     @PostMapping("remove")
-    public ResponseResult<Void> removePackage(String photoPackageName, HttpSession session) {
+    public ResponseResult<Void> removePackage(@RequestParam("package_name") String photoPackageName,
+                                              HttpSession session) {
         Integer uid = getUidFromSession(session);
         iPackageService.removePackageByPhotoPackageName(uid, photoPackageName);
         return new ResponseResult<>(SUCCESS);
     }
 
     @PostMapping("remove-all")
-    public ResponseResult<Void> removeByActivity(String activityName, HttpSession session) {
+    public ResponseResult<Void> removeByActivity(@RequestParam("activity_name") String activityName,
+                                                 HttpSession session) {
         Integer uid = getUidFromSession(session);
         iPackageService.removeAllPackageByActivityId(uid, activityName);
         return new ResponseResult<>(SUCCESS);
     }
 
     @PostMapping("upload")
-    public ResponseResult<Void> upload(@RequestParam("activity_name") String activityName, @RequestParam(
-            "photopackage_name") String photoPackageName, @RequestParam("files") MultipartFile[] multipartFiles,
-                                       HttpSession session){
+    public ResponseResult<Void> upload(@RequestParam("activity_name") String activityName,
+                                       @RequestParam("file") MultipartFile[] multipartFiles,
+                                       HttpSession session) {
         Integer uid = getUidFromSession(session);
         UserList userList = iUserListService.getByUid(uid);
         String username = userList.getUsername();
@@ -95,8 +99,7 @@ public class PackageController extends BaseController {
             if (size > UPLOAD_MAX_SIZE) {
                 throw new FileSizeException("文件超过：" + UPLOAD_MAX_SIZE + "KB");
             }
-            UploadAndDownloadUtil uploadAndDownloadUtil = new UploadAndDownloadUtil();
-            FileEntity fileEntity = uploadAndDownloadUtil.uploadName(multipartFile);
+            FileEntity fileEntity = uploadAndDownloadUtil.uploadName(multipartFile, path);
 
             photoPackage.setActivityId(activityId);
             photoPackage.setPhotoPackageName(fileEntity.getOriginalFilename());
@@ -108,17 +111,18 @@ public class PackageController extends BaseController {
         return new ResponseResult<>(SUCCESS);
     }
 
-
+    @PostMapping("down")
     public ResponseResult<Object> downPackage(@RequestParam("activity_name") String activityName, @RequestParam(
             "package_name") String photoPackageName, final HttpServletRequest request,
                                               final HttpServletResponse response) {
         Integer activityId = iActivityService.getActivity(activityName).getActivityId();
 
-        PhotoPackage photoPackage = iPackageService.findPackageByActivityIdAndDocName(activityId,photoPackageName);
-        String fileName =photoPackage.getIsGuest();
+        PhotoPackage photoPackage = iPackageService.findPackageByActivityIdAndDocName(activityId, photoPackageName);
+//        String fileName =photoPackage.getIsGuest();
+        String filePath = photoPackage.getPhotoPackageSite();
 
         UploadAndDownloadUtil uploadAndDownloadUtil = new UploadAndDownloadUtil();
-        uploadAndDownloadUtil.download(fileName,photoPackageName,photoPackage,response);
+        uploadAndDownloadUtil.download(photoPackageName, photoPackage, filePath, response);
         return new ResponseResult<>(SUCCESS);
     }
 

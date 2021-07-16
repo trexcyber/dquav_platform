@@ -1,5 +1,6 @@
 package com.dquav.dquav_platform.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.dquav.dquav_platform.entity.UserList;
 import com.dquav.dquav_platform.mapper.UserListMapper;
 import com.dquav.dquav_platform.service.ex.PasswordNotMatchException;
@@ -27,7 +28,7 @@ public interface IUserListService {
      * @throws UserNotFoundException     没找到匹配的用户名
      * @throws PasswordNotMatchException 密码输入不正确
      */
-    String login(String username, String password) throws UserNotFoundException, PasswordNotMatchException;
+    JSONObject login(String username, String password) throws UserNotFoundException, PasswordNotMatchException;
 
     /**
      * 根据用户id查询用户信息

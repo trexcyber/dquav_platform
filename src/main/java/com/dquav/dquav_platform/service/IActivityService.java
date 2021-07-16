@@ -19,13 +19,13 @@ public interface IActivityService {
     /**
      * 添加活动
      *
-     * @param username 用户名
+     * @param uid 用户id
      * @param activity 活动项目数据
      * @throws UserNotFoundException 抛出用户未找到异常
      * @throws UserLevelLimitFailException 用户等级限制异常
      * @throws InsertException       抛出插入数据异常
      */
-    void addActivity(String username, Activity activity) throws UserNotFoundException, UserLevelLimitFailException,
+    void addActivity(Integer uid, Activity activity) throws UserNotFoundException, UserLevelLimitFailException,
             InsertException;
 
     /**

@@ -2,12 +2,13 @@ package com.dquav.dquav_platform.controller;
 
 import com.dquav.dquav_platform.entity.Activity;
 import com.dquav.dquav_platform.entity.BaseActivity;
+import com.dquav.dquav_platform.entity.UserList;
+import com.dquav.dquav_platform.mapper.UserListMapper;
 import com.dquav.dquav_platform.service.IActivityService;
+import com.dquav.dquav_platform.service.IUserListService;
 import com.dquav.dquav_platform.util.ResponseResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.dquav.dquav_platform.util.UserLevelLimitUtil;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -24,6 +25,9 @@ public class ActivityController extends BaseController {
 
     @Resource
     IActivityService iActivityService;
+    @Resource
+    IUserListService iUserListService;
+
 
     @PostMapping("/")
     public ResponseResult<List<BaseActivity>> allActivity() {
@@ -31,40 +35,34 @@ public class ActivityController extends BaseController {
     }
 
     @PostMapping("activity_info")
-    public ResponseResult<Activity> activity(String activityName) {
+    public ResponseResult<Activity> activity(@RequestParam("activity_name") String activityName) {
         return new ResponseResult<>(SUCCESS, iActivityService.getActivity(activityName));
     }
 
     @PostMapping("add_activity")
-    public ResponseResult<Void> addActivity(@RequestParam("activity_name") String activityName, @RequestParam(
-            "activity_start_time") Date activityStartTime, @RequestParam("activity_end_time") Date activityEndTime,
-                                            @RequestParam("activity_adds") String activityAdds, HttpSession session) {
-        String username = getUsernameFromSession(session);
-        Activity activity = new Activity();
-        activity.setActivityName(activityName);
-        activity.setActivityStartTime(activityStartTime);
-        activity.setActivityEndTime(activityEndTime);
-        activity.setActivityAdds(activityAdds);
-        iActivityService.addActivity(username, activity);
+    public ResponseResult<Void> addActivity(@RequestBody Activity activity, HttpSession session) {
+        Integer uid = getUidFromSession(session);
+        System.out.println(uid + "+++++++++++");
+        iActivityService.addActivity(uid, activity);
         return new ResponseResult<>(SUCCESS);
     }
 
     @PostMapping("change_activity")
-    public ResponseResult<Void> changeActivity(@RequestParam("old_activity_name") String oldActivityName,
-                                               String username,
-                                               @RequestParam("activity_name") String activityName, @RequestParam(
-            "activity_start_time") Date activityStartTime, @RequestParam(
-            "activity_end_time") Date activityEndTime,
-                                               @RequestParam("activity_adds") String activityAdds) {
-        iActivityService.changeActivity(oldActivityName, username, activityName, activityStartTime, activityEndTime,
-                activityAdds);
+    public ResponseResult<Void> changeActivity(@RequestBody Activity activity,
+                                               String oldActivityName,
+                                               HttpSession session) {
+        Integer uid = getUidFromSession(session);
+        UserList user = iUserListService.getByUid(uid);
+        iActivityService.changeActivity(oldActivityName, user.getUsername(), activity.getActivityName(),
+                activity.getActivityStartTime(), activity.getActivityEndTime(),
+                activity.getActivityAdds());
         return new ResponseResult<>(SUCCESS);
     }
 
     @PostMapping("delete")
-    public ResponseResult<Void>remove(String activityName,HttpSession session){
-        String username=getUsernameFromSession(session);
-        iActivityService.removeActivity(username,activityName);
+    public ResponseResult<Void> remove(@RequestParam("activity_name") String activityName, HttpSession session) {
+        String username = getUsernameFromSession(session);
+        iActivityService.removeActivity(username, activityName);
         return new ResponseResult<>(SUCCESS);
     }
 

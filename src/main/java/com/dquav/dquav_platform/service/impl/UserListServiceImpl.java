@@ -1,6 +1,7 @@
 package com.dquav.dquav_platform.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.dquav.dquav_platform.entity.UserList;
 import com.dquav.dquav_platform.mapper.UserLevelMapper;
@@ -32,7 +33,7 @@ public class UserListServiceImpl implements IUserListService {
     UserLevelMapper userLevelMapper;
 
     @Override
-    public String login(String username, String password) throws UserNotFoundException, PasswordNotMatchException {
+    public JSONObject login(String username, String password) throws UserNotFoundException, PasswordNotMatchException {
         UserList result = userListMapper.getUserListByUsername(username);
         if (result == null) {
             throw new UserNotFoundException("用户不存在");
@@ -69,9 +70,12 @@ public class UserListServiceImpl implements IUserListService {
     public List<UserList> getUserList(Integer uid) throws UserLevelLimitFailException {
         Map<String, String> user = userListMapper.getUserLevelByUid(uid);
         String levelName = String.valueOf(user.get("levelName"));
+
         String lName1 = userLevelMapper.findUserLevel(1).getLevelName();
         String lName2 = userLevelMapper.findUserLevel(2).getLevelName();
-        if (!levelName.equals(lName1)||!levelName.equals(lName2)){
+        System.out.println(levelName);
+        System.out.println(lName1+"  "+lName2);
+        if (!levelName.equals(lName1)&&!levelName.equals(lName2)){
             throw new UserLevelLimitFailException("用户等级不够");
         }
         List<UserList> result = userListMapper.getUserList();
@@ -85,6 +89,7 @@ public class UserListServiceImpl implements IUserListService {
 
     @Override
     public void changeInfo(UserList userList) throws UserNotFoundException, UpdateException {
+        System.out.println(userList+"============");
         UserList result =userListMapper.getUserListByUsername(userList.getUsername());
         if (result == null){
             throw new UserNotFoundException("用户不存在");

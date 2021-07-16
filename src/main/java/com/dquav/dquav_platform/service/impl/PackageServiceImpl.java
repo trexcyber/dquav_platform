@@ -9,6 +9,7 @@ import com.dquav.dquav_platform.mapper.PhotoPackageMapper;
 import com.dquav.dquav_platform.mapper.UserListMapper;
 import com.dquav.dquav_platform.service.IPackageService;
 import com.dquav.dquav_platform.service.ex.*;
+import com.dquav.dquav_platform.util.UserLevelLimitUtil;
 import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class PackageServiceImpl implements IPackageService {
     ActivityMapper activityMapper;
     @Resource
     PhotoPackageMapper photoPackageMapper;
+    @Resource
+    UserLevelLimitUtil userLevelLimitUtil;
 
     @Override
     public void savePackage(Integer uid,PhotoPackage photoPackage) throws UserNotFoundException
@@ -41,6 +44,8 @@ public class PackageServiceImpl implements IPackageService {
         if (activity == null) {
             throw new ActivityNotFoundException("活动未找到");
         }
+        userLevelLimitUtil.userLimit(result.getUid());
+
         if (photoPackage.getPhotoPackageName()==null|"".equals(photoPackage.getPhotoPackageName())){
             throw new PackageNullException("上传压缩包信息不全");
         }
@@ -95,6 +100,7 @@ public class PackageServiceImpl implements IPackageService {
         if (userList == null) {
             throw new UserNotFoundException("未登录用户，请登陆后重试");
         }
+        userLevelLimitUtil.userLimit(userList.getUid());
         PhotoPackage photoPackage = photoPackageMapper.getPhotoPackageByPhotoName(photoPackageName);
         if (photoPackage == null) {
             throw new PackageNotFoundException("未找到照片压缩包");
@@ -113,6 +119,7 @@ public class PackageServiceImpl implements IPackageService {
         if (userList == null) {
             throw new UserNotFoundException("未找到用户");
         }
+        userLevelLimitUtil.userLimit(userList.getUid());
         Activity activity = activityMapper.getByActivityName(activityName);
         if (activity == null) {
             throw new ActivityNotFoundException("未找到活动");

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author TrEx
@@ -28,28 +29,35 @@ public class ActivityServiceImpl implements IActivityService {
     GuestPhotoMapper guestPhotoMapper;
     @Resource
     PhotoPackageMapper photoPackageMapper;
+    @Resource
+    UserLevelMapper userLevelMapper;
+    @Resource
+    UserLevelLimitUtil userLevelLimitUtil;
 
     /**
      * 添加活动项目
      *
-     * @param username 用户名
+     * @param uid 用户名
      * @param activity 活动项目数据
      * @throws InsertException 抛出插入数据异常
      */
     @Override
-    public void addActivity(String username, Activity activity) throws UserNotFoundException,
+    public void addActivity(Integer uid, Activity activity) throws UserNotFoundException,
             UserLevelLimitFailException, InsertException {
-        UserList user = userListMapper.getUserListByUsername(username);
+        UserList user = userListMapper.getUserListById(uid);
         if (user == null) {
             throw new UserNotFoundException("用户未登录");
         }
+        System.out.println("1");
 //        查询用户等级
 
-        Integer userLid = user.getLid();
-        UserLevelLimitUtil userLevelLimitUtil = new UserLevelLimitUtil();
-        userLevelLimitUtil.userLimit(userLid);
 
+//        UserLevelLimitUtil userLevelLimitUtil = new UserLevelLimitUtil();
+//        userLevelLimitUtil.userLimit(uid);
 
+        userLevelLimitUtil.userLimit(user.getUid());
+
+        System.out.println("2");
         Date date = new Date();
         activity.setIsDelete(0);
         activity.setCreatedTime(date);
@@ -58,12 +66,14 @@ public class ActivityServiceImpl implements IActivityService {
 
 //        处理传入的活动开始、结束时间参数
 
+        System.out.println("3");
 
-        activity.setActivityName(activity.getActivityName());
-        activity.setActivityStartTime(activity.getActivityStartTime());
-        activity.setActivityStartTime(activity.getActivityEndTime());
-        activity.setActivityAdds(activity.getActivityAdds());
+//        activity.setActivityName(activity.getActivityName());
+//        activity.setActivityStartTime(activity.getActivityStartTime());
+//        activity.setActivityStartTime(activity.getActivityEndTime());
+//        activity.setActivityAdds(activity.getActivityAdds());
 
+        System.out.println("4");
         Integer rows = activityMapper.addActivity(activity);
 
         if (rows != 1) {
@@ -108,9 +118,8 @@ public class ActivityServiceImpl implements IActivityService {
             throw new UserNotFoundException("请登录后操作");
         }
 //        查询用户等级
-        Integer userLid = user.getLid();
-        UserLevelLimitUtil userLevelLimitUtil = new UserLevelLimitUtil();
-        userLevelLimitUtil.userLimit(userLid);
+
+        userLevelLimitUtil.userLimit(user.getUid());
 
         Activity oldActivity = activityMapper.getByActivityName(oldActivityName);
         if (oldActivity == null) {
@@ -133,9 +142,7 @@ public class ActivityServiceImpl implements IActivityService {
             throw new UserNotFoundException("请登录后操作");
         }
 //        查询用户等级
-        Integer userLid = user.getLid();
-        UserLevelLimitUtil userLevelLimitUtil = new UserLevelLimitUtil();
-        userLevelLimitUtil.userLimit(userLid);
+        userLevelLimitUtil.userLimit(user.getUid());
 
 
         Activity activity = getActivity(activityName);

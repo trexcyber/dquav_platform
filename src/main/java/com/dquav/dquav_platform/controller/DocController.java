@@ -10,6 +10,7 @@ import com.dquav.dquav_platform.service.IDocService;
 import com.dquav.dquav_platform.service.IUserListService;
 import com.dquav.dquav_platform.util.ResponseResult;
 import com.dquav.dquav_platform.util.UploadAndDownloadUtil;
+import org.apache.commons.io.FileExistsException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +37,8 @@ public class DocController extends BaseController {
     IActivityService iActivityService;
     @Resource
     IUserListService iUserListService;
+    @Resource
+    UploadAndDownloadUtil uploadAndDownloadUtil;
 
     private static final long UPLOAD_MAX_SIZE = 30 * 1024 * 1024;
 
@@ -63,7 +66,7 @@ public class DocController extends BaseController {
      * @return 删除成功后的状态
      */
     @PostMapping("remove")
-    public ResponseResult<Void> deleteDoc(@RequestParam("activityid") Integer activityId,
+    public ResponseResult<Void> deleteDoc(@RequestParam("activity_id") Integer activityId,
                                           @RequestParam("doc_name") String docName,
                                           HttpSession session) {
         String username = getUsernameFromSession(session);
@@ -76,15 +79,12 @@ public class DocController extends BaseController {
      * 上传文档
      *
      * @param activityId     活动名
-     * @param docName        文件名
      * @param multipartFiles 文件数据
      * @param session        用户id
      * @return 上传成后的文档列表路径
-     * @throws IOException 流异常
      */
     @PostMapping("upload")
-    public ResponseResult<Void> upload(@RequestParam("activity_id") Integer activityId,
-                                       @RequestParam("doc_name") String docName
+    public ResponseResult<Void> upload(@RequestParam("activity_id") Integer activityId
             , @RequestParam("file") MultipartFile[] multipartFiles, HttpSession session){
 
 
@@ -99,7 +99,8 @@ public class DocController extends BaseController {
         Doc doc = new Doc();
 
         long size;
-        String path = ROOT_PATH + activityId + File.separator;
+        String path = ROOT_PATH + activityId + File.separator + "doc" + File.separator;
+        System.out.println(path);
         File fileDir = new File(path);
         if (!fileDir.exists() && !fileDir.isDirectory()) {
             fileDir.mkdirs();
@@ -113,8 +114,7 @@ public class DocController extends BaseController {
                 throw new FileSizeException("上传文件有大小超过" + UPLOAD_MAX_SIZE / 1024 + "KB");
             }
 
-            UploadAndDownloadUtil uploadAndDownloadUtil =new UploadAndDownloadUtil();
-            FileEntity fileEntity = uploadAndDownloadUtil.uploadName(multipartFile);
+            FileEntity fileEntity = uploadAndDownloadUtil.uploadName(multipartFile,path);
 
 //            执行保存信息
             doc.setActivityId(activityId);
@@ -141,11 +141,14 @@ public class DocController extends BaseController {
         Doc doc = iDocService.findDocByActivityIdAndDocName(activityId, docName);
 
         //        获取文件存储路径
-        String fileName = doc.getIsDelete();
+//        String fileName = doc.getIsDelete();
+        Doc doc1 =iDocService.findDocByActivityIdAndDocName(activityId,docName);
+        String docName1 = doc1.getDocName();
+        System.out.println("1111"+docName1);
+        String filePath = doc.getDocSite();
 
-        UploadAndDownloadUtil uploadAndDownloadUtil = new UploadAndDownloadUtil();
-        uploadAndDownloadUtil.download(fileName,docName,doc,response);
+        uploadAndDownloadUtil.download(docName1,doc,filePath,response);
 
-        return new ResponseResult<>(SUCCESS);
+        return null;
     }
 }

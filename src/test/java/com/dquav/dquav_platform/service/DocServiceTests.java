@@ -2,6 +2,7 @@ package com.dquav.dquav_platform.service;
 
 import com.dquav.dquav_platform.entity.Doc;
 import com.dquav.dquav_platform.service.ex.ServiceException;
+import org.apache.commons.io.FileExistsException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,21 +22,21 @@ public class DocServiceTests {
     @Resource
     IDocService iDocService;
 
-    @Test
-    public void saveDoc(){
-        try {
-            String username = "trexcyber";
-            Doc doc = new Doc();
-            doc.setActivityId(2);
-            doc.setDocName("文档测试1123");
-            doc.setDocSite("c://doc/123.docx");
-            iDocService.saveDoc(username,doc);
-            System.out.println("ok");
-        }catch (ServiceException e){
-            System.out.println(e.getClass().getName());
-            System.out.println(e.getMessage());
-        }
-    }
+//    @Test
+//    public void saveDoc(){
+//        try {
+//            String username = "trexcyber";
+//            Doc doc = new Doc();
+//            doc.setActivityId(2);
+//            doc.setDocName("文档测试1123");
+//            doc.setDocSite("c://doc/123.docx");
+//            iDocService.saveDoc(username,doc);
+//            System.out.println("ok");
+//        }catch (ServiceException | FileExistsException e){
+//            System.out.println(e.getClass().getName());
+//            System.out.println(e.getMessage());
+//        }
+//    }
 
     @Test
     public void findDocByName(){

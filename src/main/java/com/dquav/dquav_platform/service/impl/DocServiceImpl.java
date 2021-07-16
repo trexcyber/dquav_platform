@@ -8,6 +8,8 @@ import com.dquav.dquav_platform.mapper.DocMapper;
 import com.dquav.dquav_platform.mapper.UserListMapper;
 import com.dquav.dquav_platform.service.IDocService;
 import com.dquav.dquav_platform.service.ex.*;
+import com.dquav.dquav_platform.util.UserLevelLimitUtil;
+import org.apache.commons.io.FileExistsException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,14 +28,16 @@ public class DocServiceImpl implements IDocService {
     ActivityMapper activityMapper;
     @Resource
     UserListMapper userListMapper;
+    @Resource
+    UserLevelLimitUtil userLevelLimitUtil;
 
     @Override
-    public void saveDoc(String username, Doc doc) throws UserNotFoundException, InsertException {
+    public void saveDoc(String username, Doc doc) throws UserNotFoundException,InsertException {
         UserList userResult = userListMapper.getUserListByUsername(username);
         if (userResult == null) {
             throw new UserNotFoundException("未登录用户");
         }
-
+        userLevelLimitUtil.userLimit(userResult.getUid());
         Doc docResult = docMapper.getDocByName(doc.getDocName());
         if (docResult != null){
             throw new InsertException("文件名已存在");
@@ -42,8 +46,6 @@ public class DocServiceImpl implements IDocService {
         if (rows != 1) {
             throw new InsertException("文档上传失败");
         }
-
-
     }
 
     @Override
@@ -86,6 +88,7 @@ public class DocServiceImpl implements IDocService {
         if (userResult == null) {
             throw new UserNotFoundException("未登录用户");
         }
+        userLevelLimitUtil.userLimit(userResult.getUid());
         Doc doc = docMapper.getDocByName(docName);
         if (doc == null) {
             throw new DocNotFoundException("未找到文档");
@@ -104,6 +107,7 @@ public class DocServiceImpl implements IDocService {
         if (userResult == null) {
             throw new UserNotFoundException("未登录用户");
         }
+        userLevelLimitUtil.userLimit(userResult.getUid());
         Activity activityResult = activityMapper.getByActivityName(activityName);
         if (activityResult == null) {
             throw new ActivityNotFoundException("活动项目已删除");

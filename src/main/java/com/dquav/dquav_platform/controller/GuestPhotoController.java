@@ -9,6 +9,8 @@ import com.dquav.dquav_platform.service.IActivityService;
 import com.dquav.dquav_platform.service.IGuestPhotoService;
 import com.dquav.dquav_platform.service.IUserListService;
 import com.dquav.dquav_platform.util.ResponseResult;
+import com.dquav.dquav_platform.util.UploadAndDownloadUtil;
+import com.dquav.dquav_platform.util.UserLevelLimitUtil;
 import javafx.application.Application;
 import org.apache.catalina.connector.Response;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -51,6 +53,10 @@ public class GuestPhotoController extends BaseController {
     IUserListService iUserListService;
     @Resource
     IActivityService iActivityService;
+    @Resource
+    UserLevelLimitUtil userLevelLimitUtil;
+    @Resource
+    UploadAndDownloadUtil uploadAndDownloadUtil;
 
     private static final long UPLOAD_MAX_SIZE = 30 * 1024 * 1024;
 
@@ -88,48 +94,20 @@ public class GuestPhotoController extends BaseController {
     public ResponseResult<List<GuestPhoto>> upload(Integer activityId,@RequestParam("file")MultipartFile[] files, HttpServletResponse response, HttpSession session) {
         Integer uid = getUidFromSession(session);
         iUserListService.getByUid(uid);
+        userLevelLimitUtil.userLimit(uid);
         Activity activity =iActivityService.findActivityById(activityId);
         String activityName =activity.getActivityName();
 
         log.info("上传多个文件");
-        StringBuilder builder =new StringBuilder();
-
         String strongPath =ROOT_PATH+activityId+File.separator+"img"+File.separator;
-
-        long size;
-
-        try {
-            for (MultipartFile file : files) {
-                size=file.getSize();
-                if (file.isEmpty()){
-                    throw new FlieEmptyException("文件为空");
-                }
-                if (size>UPLOAD_MAX_SIZE){
-                    throw new FileSizeException("文件太大");
-                }
-                String contentType =file.getContentType();
-                if (!UPLOAD_CONTENT_TYPES.contains(contentType)){
-                    throw new FileStateException("文件类型错误");
-                }
-                String photoAddress=file.getOriginalFilename();
-                int beginIndex = photoAddress.lastIndexOf(".");
-                String suffix = photoAddress.substring(beginIndex);
-                String fileName = System.currentTimeMillis() + suffix;
-                String photoPath =strongPath+fileName;
-                try {
-                    Streams.copy(file.getInputStream(),new FileOutputStream(photoPath),true);
-                }catch (IllegalStateException e) {
-                    e.printStackTrace();
-                    throw new FileStateException("照片无法访问！");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new FileUploadException("上传异常");
-                }
-                iGuestPhotoService.savePhoto(uid,activityName,photoPath);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        File fileDir = new File(strongPath);
+        if (!fileDir.exists() && !fileDir.isDirectory()) {
+            fileDir.mkdirs();
         }
+
+        uploadAndDownloadUtil.uploadPhoto(uid,activityName,files,strongPath);
+
+
         List<GuestPhoto> photoList = iGuestPhotoService.findPhotoByActivityName(activityName);
         return new ResponseResult<>(SUCCESS,photoList);
     }
