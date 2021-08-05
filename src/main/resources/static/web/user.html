@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>活动平台测试页面</title>
+		<!-- Query库文件和jquery.cookie.js文件的顺序。须先引入jQuery库文件再引入cookie插件文件-->
+		<script type="text/javascript" src="../js/jquery-1.11.1.min.js">
+		</script>
+		<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+	</head>
+	<body>
+
+		<!-- 个人信息 -->
+		个人信息
+		<form id="from-change-info">
+			<p>用户id：<input type="text" name="uid" id="uid"></p>
+			<p>用戶等级id：<input type="text" name="lid" id="lid"></p>
+			<p>用戶名：<input type="text" name="username" id="username"></p>
+			<p>密码：<input type="text" name="password" id="password"></p>
+			<p>姓名：<input type="text" name="name" id="name"></p>
+			<p>電話：<input type="text" name="telephone" id="telephone"></p>
+			
+			<p><input id="btn-change-info" type="button" value="确认修改"></p>
+		</form>
+		<hr>
+
+		用户列表
+		<table id="form-user-list">
+			<tr>
+				<th>用户ID</th>
+				<th>用户等级ID</th>
+				<th>用户名</th>
+				<th>密码</th>
+				<th>姓名</th>
+				<th>电话</th>
+			</tr>
+		</table>
+
+<a href="activity.html">活动项目</a>
+
+
+		<script type="text/javascript">
+
+			$(document).ready(function() {
+				showUserList(),
+				showUserInfo();
+			
+				$("#btn-change-info").click(function() {
+					changeInfo();
+				});
+			});
+
+
+$.fn.serializeObject = function() {  
+    var o = {};  
+    var a = this.serializeArray();  
+    $.each(a, function() {  
+        if (o[this.name]) {  
+            if (!o[this.name].push) {  
+                o[this.name] = [ o[this.name] ];  
+            }  
+            o[this.name].push(this.value || '');  
+        } else {  
+            o[this.name] = this.value || '';  
+        }  
+    });  
+    return o;  
+}
+		
+			// 	$ajax({
+			// 		"typr":"HEAD",
+			// 		"url":"window.location.href",
+			// 		complete:function(xhr,data){
+			// 			var wpoInfo={
+			// 				"JSESSIONID":xhr.getResponseHeader("JSESSIONID")
+			// 			};
+			// 		}
+			// 	})
+			function showUserList() {
+				$.ajax({
+					"url": "/dquav/user/list",
+					"type": "post",
+					"datatype":"json",
+					async: true,
+					xhrFields: {
+						withCredentials: true
+					},
+					// data: { JSESSIONID: document.cookie },
+					"success": function(json) {
+						// debugger
+						if (json.state == 200) {
+							var list = json.data;
+							for(i in json.data){
+								console.log(json.data);
+								var tr;
+								tr='<td>'+json.data[i].uid+'</td>'
+								+'<td>'+json.data[i].lid+'</td>'
+								+'<td>'+json.data[i].username+'</td>'
+								+'<td>'+json.data[i].password+'</td>'
+								+'<td>'+json.data[i].name+'</td>'
+								+'<td>'+json.data[i].telephone+'</td>';
+								$("#form-user-list").append('<tr>'+tr +'</tr>')
+							}
+						}
+					}
+				});}
+		
+
+
+
+			function showUserInfo() {
+				$.ajax({
+					"url": "/dquav/user/info",
+					"type": "post",
+					"dataType": "json",
+					async: true,
+					xhrFields: {
+						
+						withCredentials: true
+					},
+					// "xhr": function(xhr) {
+					// 	console.log(xhr)
+					// },
+					"success": function(json) {
+						if (json.state == 200) {
+							$("#uid").val(json.data.uid);
+							$("#lid").val(json.data.lid);
+							$("#username").val(json.data.username);
+							$("#password").val(json.data.password);
+							$("#name").val(json.data.name);
+							$("#telephone").val(json.data.telephone);
+							// console.log(json.data.username);
+							// console.log(json.data.telephone);
+							console.log(JSON.stringify( $("#from-change-info").serializeObject()));
+
+						} else {
+							alert(json.message);
+						}
+					}
+				});
+			}
+
+			function changeInfo() {
+				$.ajax({
+					"url": "/dquav/user/change_info",
+					"data":JSON.stringify( $("#from-change-info").serializeObject()),
+					"type": "post",
+					"dataType": "json",
+					"contentType": "application/json;charset=UTF-8",
+					async: true,
+					xhrFields: {
+						withCredentials: true
+					},
+					"success": function(json) {
+						if (json.state == 200) {
+							alert("修改成功");
+							//    location.href="login.html";
+						} else {
+							alert(json.message);
+						}
+					},
+					"error": function() {
+						alert("登錄信息超時，重新登陸");
+						location.href = "111.html";
+					}
+				});
+			}
+		</script>
+	</body>
+</html>

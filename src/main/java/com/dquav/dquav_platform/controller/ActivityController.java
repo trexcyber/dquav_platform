@@ -41,6 +41,7 @@ public class ActivityController extends BaseController {
 
     @PostMapping("add_activity")
     public ResponseResult<Void> addActivity(@RequestBody Activity activity, HttpSession session) {
+        System.out.println(activity);
         Integer uid = getUidFromSession(session);
         System.out.println(uid + "+++++++++++");
         iActivityService.addActivity(uid, activity);

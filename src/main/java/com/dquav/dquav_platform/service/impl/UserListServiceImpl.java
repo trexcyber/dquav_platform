@@ -82,8 +82,8 @@ public class UserListServiceImpl implements IUserListService {
         JsonResult jsonResult = new JsonResult();
         for (UserList userList : result) {
             jsonResult.userListJsonFilter(userList);
+            System.out.println(userList);
         }
-
         return result;
     }
 

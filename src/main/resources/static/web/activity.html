@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>活动平台测试页面</title>
+		<!-- Query库文件和jquery.cookie.js文件的顺序。须先引入jQuery库文件再引入cookie插件文件-->
+		<script type="text/javascript" src="../js/jquery-1.11.1.min.js">
+		</script>
+		<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+	</head>
+	<body>
+
+
+	活动列表
+		<table id="form-activity">
+			<tr>
+				<th>活动项目名称</th>
+				<th>活动开始时间</th>
+
+			</tr>
+		</table>
+		
+		<hr >
+
+
+		活动详情
+		<form id="from-activity-info">
+			<p>活动名：<input type="text" name="activityName" id="activityName"></p>
+			<p>活动开始时间：<input type="text" name="activityStartTime" id="activityStartTime"></p>
+			<p>活动结束时间：<input type="text" name="activityEndTime" id="activityEndTime"></p>
+			<p>活动地址：<input type="text" name="activityAdds" id="activityAdds"></p>
+			<p>创建时间：<input type="text" name="createdTime" id="createdTime"></p>
+			<p>更新人：<input type="text" name="updateBy" id="updateBy"></p>
+			<p>更新时间：<input type="text" name="updateTime" id="updateTime"></p>
+			
+				<p><input id="btn-change-info" type="button" value="确认修改"></p>
+				<p><input id="btn-activity-delete" type="button" value="删除"></p>
+		</form>
+		<hr>
+	新增活动
+	<form id="from-activity-add">
+		<p>活动名：<input type="text" name="activityName" ></p>
+		<p>活动开始时间：<input type="date" name="activityStartTime" ></p>
+		<p>活动结束时间：<input type="date" name="activityEndTime" ></p>
+		<p>活动地址：<input type="text" name="activityAdds" ></p>
+		<p><input id="btn-change-add" type="button" value="提交"></p>
+	</form>
+
+	
+	
+
+		<script type="text/javascript">
+
+			var allData ;
+
+			$(document).ready(function() {
+				showActivityList()
+				
+			$("#btn-change-info").click(function() {
+				changeInfo(allData);
+			});
+
+				$("#btn-change-add").click(function () {
+					$.ajax({
+						"url": "/dquav/activity/add_activity",
+						"data": JSON.stringify($("#from-activity-add").serializeObject()),
+						"type": "post",
+						"dataType": "json",
+						"contentType":"application/json;charset=UTF-8",
+						async:true,
+						xhrFields:{
+							// open("post","http://localhost:8877",true),
+							// send(null),
+							withCredentials:true
+						},
+						"success": function (json) {
+							if (json.state == 200) {
+								alert("添加成功");
+								$.cookie("jsessionid", document.cookie, {"expires": 7});
+								console.log(json.data)
+								// location.href="/dquav/web/user.html";
+							} else {
+								alert(json.message);
+							}
+						}
+					});
+				});
+				
+				
+			});
+
+
+$.fn.serializeObject = function() {  
+    var o = {};  
+    var a = this.serializeArray();  
+    $.each(a, function() {  
+        if (o[this.name]) {  
+            if (!o[this.name].push) {  
+                o[this.name] = [ o[this.name] ];  
+            }  
+            o[this.name].push(this.value || '');  
+        } else {  
+            o[this.name] = this.value || '';  
+        }  
+    });  
+    return o;  
+}
+			// 	$ajax({
+			// 		"typr":"HEAD",
+			// 		"url":"window.location.href",
+			// 		complete:function(xhr,data){
+			// 			var wpoInfo={
+			// 				"JSESSIONID":xhr.getResponseHeader("JSESSIONID")
+			// 			};
+			// 		}
+			// 	})
+			function showActivityList() {
+				$.ajax({
+					// http://localhost:8877/dquav/activity/
+					"url": "/dquav/activity"+"/",
+					"type": "post",
+					"datatype":"json",
+					async: true,
+					xhrFields: {
+						withCredentials: true
+					},
+					// data: { JSESSIONID: document.cookie },
+					"success": function(json) {
+						// debugger
+						if (json.state == 200) {
+							var list = json.data;
+							for(i in json.data){
+								console.log(json.data);
+								var tr;
+								tr='<th >'+json.data[i].activityName+'</th>'
+								+'<th>'+json.data[i].activityStartTime+'</th>'
+								$("#form-activity").append('<tr id='+ json.data[i].activityName+'>'+tr +'</tr>')
+							}
+						}
+					}
+				});}
+		
+				$.fn.showActivityName=$("#form-activity").on("click", "tr", function(el) {
+					console.log($(el.currentTarget).attr("id"));
+					var data ={};
+					activityInfoName = 'activity_name';
+					data[activityInfoName]=$(el.currentTarget).attr("id");
+					if(data != null){
+						showActivityInfo(data);
+						
+						// oldActivityName='oldActivityName';
+						// allData[oldActivityName]=$(el.currentTarget).attr("id");
+						allData=$(el.currentTarget).attr("id");
+						console.log("1111"+JSON.stringify(allData));
+						window.allData=allData;
+					}
+					console.log("3332"+allData);
+				});
+				
+			
+
+			function showActivityInfo(data) {
+				$.ajax({
+					"url": "/dquav/activity/activity_info",
+					"type": "post",
+					"data": data,
+					// "contentType": "application/json;charset=UTF-8",
+					"dataType": "json",
+					async: true,
+					xhrFields: {
+						withCredentials: true
+					},
+					// "xhr": function(xhr) {
+					// 	console.log(xhr)
+					// },
+					"success": function(json) {
+						if (json.state == 200) {
+							$("#activityName").val(json.data.activityName);
+							$("#activityStartTime").val(json.data.activityStartTime);
+							$("#activityEndTime").val(json.data.activityEndTime);
+							$("#activityAdds").val(json.data.activityAdds);
+							$("#createdTime").val(json.data.createdTime);
+							$("#updateBy").val(json.data.updateBy);
+							$("#updateTime").val(json.data.updateTime);
+							// console.log(json.data.username);
+							// console.log(json.data.telephone);
+							// console.log(JSON.stringify( $("#from-change-info").serializeObject())ac);
+
+						} else {
+							alert(json.message);
+						}
+					}
+				});
+			}
+console.log("2222"+window.allData);
+
+			function changeInfo(allData) {
+				
+				var url = "/dquav/activity/change_activity";
+				console.log(url);
+				// console.log({"activity":JSON.stringify($("#from-activity-info").serializeObject())","+"oldActivityName": allData});
+				
+				$.ajax({
+					"url": url+"?oldActivityName="+allData,
+					"data":JSON.stringify($("#from-activity-info").serializeObject()),
+					"type": "post",
+					"dataType": "json",
+					"contentType": "application/json;charset=UTF-8",
+					// traditional:true,
+					async: true,
+					xhrFields: {
+						withCredentials: true
+					},
+					"success": function(json) {
+						if (json.state == 200) {
+							alert("修改成功");
+							//    location.href="login.html";
+						} else {
+							alert(json.message);
+						}
+					},
+					"error": function() {
+						alert("登錄信息超時，重新登陸");
+						location.href = "111.html";
+					}
+				});
+			}
+		</script>
+	</body>
+</html>

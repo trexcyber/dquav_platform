@@ -74,8 +74,8 @@ public class ActivityServiceImpl implements IActivityService {
 //        activity.setActivityAdds(activity.getActivityAdds());
 
         System.out.println("4");
+        System.out.println("11111"+activity);
         Integer rows = activityMapper.addActivity(activity);
-
         if (rows != 1) {
             throw new InsertException("添加活动项目异常，请稍后再试");
         }

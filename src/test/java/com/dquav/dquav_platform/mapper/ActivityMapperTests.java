@@ -27,7 +27,7 @@ public class ActivityMapperTests {
     @Test
     public void addActivity(){
         Activity activity = new Activity();
-        activity.setActivityName("陕投三会(测试2)");
+        activity.setActivityName("陕投三会(测试2)563");
         Date date =new Date();
         activity.setActivityStartTime(date);
         activity.setActivityEndTime(date);

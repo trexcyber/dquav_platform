@@ -8,25 +8,25 @@
     <!--    插入活动项目数据-->
     <insert id="addActivity" useGeneratedKeys="true" keyProperty="activityId">
         INSERT INTO activity(
-        activityid ,
-        activity_name,
-        activity_starttime,
-        activity_endtime,
-        activity_adds,
-        is_delete,
-        CREATED_TIME,
-        UPDATED_BY,
+       activityid ,
+        activity_name ,
+        activity_starttime ,
+        activity_endtime ,
+        activity_adds ,
+        is_delete ,
+        CREATED_TIME ,
+        UPDATED_BY ,
         UPDATED_TIME
         )VALUES (
-       activityid= #{activityId},
-       activity_name= #{activityName},
-       activity_starttime= #{activityStartTime},
-       activity_endtime= #{activityEndTime},
-       activity_adds= #{activityAdds},
-       is_delete= #{isDelete},
-       CREATED_TIME=  #{createdTime},
-       UPDATED_BY=#{updateBy},
-       UPDATED_TIME=  #{updateTime}
+       #{activityId},
+        #{activityName},
+        #{activityStartTime},
+        #{activityEndTime},
+        #{activityAdds},
+        #{isDelete},
+         #{createdTime},
+       #{updateBy},
+         #{updateTime}
         )
     </insert>
 
